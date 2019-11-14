@@ -1,11 +1,14 @@
 package com.syntheticentropy.ocpro;
 
+import com.ugos.jiprolog.engine.JIPDebugger;
+import com.ugos.jiprolog.engine.JIPEngine;
 import li.cil.oc.api.machine.Architecture;
 import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class PrologArchitecture implements Architecture {
 
     final Machine machine;
+
+    JIPEngine jip;
 
     private Object vmReference;
     private Object synchronizedCallFn;
@@ -31,25 +36,19 @@ public class PrologArchitecture implements Architecture {
     }
 
     @Override
-    public boolean isInitialized() {
-        return true;
-    }
-
-    @Override
-    public boolean recomputeMemory(Iterable<ItemStack> iterable) {
-        // TODO: care about memory limits
-        return true;
-    }
-
-    @Override
     public boolean initialize() {
 
         //create the VM
+        JIPDebugger.debug = true; // force it to load .pl files instead of compiled files
+
+        jip = new JIPEngine();
 
         // Inject java-backed APIs
         apis.forEach(PrologAPI::initialize);
 
         // load kernel
+        InputStream machineKernel = machine.getClass().getResourceAsStream(OpenProlog.RESOURCE_PATH + "machine.pl");
+        jip.consultStream(machineKernel, "kernel");
 
         return true;
     }
@@ -62,6 +61,17 @@ public class PrologArchitecture implements Architecture {
     @Override
     public ExecutionResult runThreaded(boolean b) {
         return null;
+    }
+
+    @Override
+    public boolean isInitialized() {
+        return true;
+    }
+
+    @Override
+    public boolean recomputeMemory(Iterable<ItemStack> iterable) {
+        // TODO: care about memory limits
+        return true;
     }
 
     @Override

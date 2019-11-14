@@ -18,6 +18,9 @@ public class OpenProlog
     @SuppressWarnings("WeakerAccess")
     public static final String VERSION = "1.0";
 
+    // resource path
+    static final String RESOURCE_PATH = "/com/syntheticentropy/ocpro/";
+
     private static Logger logger;
 
     @EventHandler

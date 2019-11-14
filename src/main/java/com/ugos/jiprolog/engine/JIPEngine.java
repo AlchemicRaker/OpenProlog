@@ -46,7 +46,7 @@ public class JIPEngine implements Serializable {
     private final static long serialVersionUID = 310000001L;
 
     // resource path
-    static final String RESOURCEPATH = "/com/ugos/jiprolog/resources/";
+    static final String RESOURCEPATH = "/com/ugos/jiprolog/";
 
     public static final int major = 4;
     public static final int minor = 1;
@@ -167,7 +167,7 @@ public class JIPEngine implements Serializable {
 
 
         try {
-            consultFile("INTERNAL://com/ugos/jiprolog/resources/x.pl");
+            consultFile("INTERNAL://com/ugos/jiprolog/x.pl");
         } catch (JIPSyntaxErrorException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -588,7 +588,7 @@ public class JIPEngine implements Serializable {
             m_opManager.reset();
 
             try {
-                consultFile("INTERNAL://com/ugos/jiprolog/resources/x.pl");
+                consultFile("INTERNAL://com/ugos/jiprolog/x.pl");
             } catch (JIPSyntaxErrorException e) {
                 e.printStackTrace();
             } catch (IOException e) {
