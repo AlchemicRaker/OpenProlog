@@ -36,9 +36,9 @@ public class TermVariables2 extends BuiltIn {
         }
 
         if (list != null) {
-            if (!(list instanceof List))
+            if (!(list instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
-            if (!(((List) list).isClosedOrPartial()))
+            if (!(((ConsList) list).isClosedOrPartial()))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
         }
 
@@ -46,16 +46,16 @@ public class TermVariables2 extends BuiltIn {
 
         addVariables(term, varsVect);
 
-        List varList = null;
+        ConsList varList = null;
         for (int i = 0; i < varsVect.size(); i++) {
             Variable var = varsVect.elementAt(i);//.getLastVariable();
-            varList = new List(var, varList);
+            varList = new ConsList(var, varList);
         }
 
         if (varList == null) {
-            varList = List.NIL;
+            varList = ConsList.NIL;
         } else {
-            varList = (List) varList.reverse();
+            varList = (ConsList) varList.reverse();
         }
 
         return getParam(2).unify(varList, varsTbl);

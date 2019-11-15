@@ -60,10 +60,10 @@ public class CallN extends BuiltIn {
                 if (BuiltInFactory.isBuiltIn(((Functor) goal).getName()))
                     goal = new BuiltInPredicate(((Functor) goal));
             }
-        } else if (closure instanceof List) {
-            if (((List) closure).getHeight() + params.getHeight() > 2)
+        } else if (closure instanceof ConsList) {
+            if (((ConsList) closure).getHeight() + params.getHeight() > 2)
                 throw new JIPExistenceException("procedure", (new Functor("./3", null)).getPredicateIndicator());
-            goal = new List(closure, params);
+            goal = new ConsList(closure, params);
         } else if (closure instanceof ConsCell) {
             if (((ConsCell) closure).getHeight() + params.getHeight() > 2)
                 throw new JIPExistenceException("procedure", (new Functor("(,)/3", null)).getPredicateIndicator());

@@ -6,7 +6,7 @@ import java.util.Stack;
 final class Findall3 extends BuiltIn {
     WAM m_wam;
     PrologObject m_res;
-    List m_solList;
+    ConsList m_solList;
 
     public final boolean unify(final Hashtable varsTbl) {
         PrologObject term = getParam(1);
@@ -17,7 +17,7 @@ final class Findall3 extends BuiltIn {
             throw new JIPInstantiationException(2);
 
         if (list != null) {
-            if (!(list instanceof List))
+            if (!(list instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
             if (!(((ConsCell) list).isClosedOrPartial()))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
@@ -39,11 +39,11 @@ final class Findall3 extends BuiltIn {
         m_solList = null;
 
         while (!solStack.isEmpty()) {
-            m_solList = new List((PrologObject) solStack.pop(), m_solList);
+            m_solList = new ConsList((PrologObject) solStack.pop(), m_solList);
         }
 
         if (m_solList == null)
-            m_solList = List.NIL;
+            m_solList = ConsList.NIL;
 
         m_wam.closeQuery();
 

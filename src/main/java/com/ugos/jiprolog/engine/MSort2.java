@@ -13,7 +13,7 @@ final class MSort2 extends BuiltIn {
         if (input == null)
             throw new JIPInstantiationException(1);
 
-        if (!(input instanceof List))
+        if (!(input instanceof ConsList))
             throw new JIPTypeException(JIPTypeException.LIST, input);
 
         if ((((ConsCell) input).isPartial()))
@@ -24,7 +24,7 @@ final class MSort2 extends BuiltIn {
 
         PrologObject o = getRealTerm(output);
         if (o != null) {
-            if (!(o instanceof List))
+            if (!(o instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, output);
 
             if ((((ConsCell) o).isPartial()))
@@ -34,7 +34,7 @@ final class MSort2 extends BuiltIn {
                 throw new JIPTypeException(JIPTypeException.LIST, output);
         }
 
-        java.util.List<PrologObject> terms = ((List) input).getTerms();
+        java.util.List<PrologObject> terms = ((ConsList) input).getTerms();
 
         Collections.sort(terms, new Comparator<PrologObject>() {
 
@@ -45,7 +45,7 @@ final class MSort2 extends BuiltIn {
             }
         });
 
-        List sortedList = List.create(terms);
+        ConsList sortedList = ConsList.create(terms);
 
         return sortedList.unify(output, varsTbl);
     }

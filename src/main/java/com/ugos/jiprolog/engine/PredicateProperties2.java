@@ -49,32 +49,32 @@ final class PredicateProperties2 extends BuiltIn {
         Clause clause = Clause.getClause(funct.getParams().getHead(), false);
         String strFunc = new StringBuilder(clause.getHead().toString(getJIPEngine())).append('/').append(((ConsCell) funct.getParams().getTail()).getHead().toString(getJIPEngine())).toString();
 
-        List propsList = null;
+        ConsList propsList = null;
 
         if (getJIPEngine().getGlobalDB().isDynamic(strFunc))
-            propsList = new List(Atom.createAtom("dynamic"), propsList);
+            propsList = new ConsList(Atom.createAtom("dynamic"), propsList);
         else
-            propsList = new List(Atom.createAtom("static"), propsList);
+            propsList = new ConsList(Atom.createAtom("static"), propsList);
 
 
 //      System.out.println(propsList);
         if (getJIPEngine().getGlobalDB().isMultifile(strFunc))
-            propsList = new List(Atom.createAtom("multifile"), propsList);
+            propsList = new ConsList(Atom.createAtom("multifile"), propsList);
 
 //      System.out.println(propsList);
         if (getJIPEngine().getGlobalDB().isModuleTransparent(strFunc))
-            propsList = new List(Atom.createAtom("transparent"), propsList);
+            propsList = new ConsList(Atom.createAtom("transparent"), propsList);
 
 //      System.out.println(propsList);
         if (getJIPEngine().getGlobalDB().isSystem(strFunc)) {
-            propsList = new List(Atom.createAtom("built_in"), propsList);
-            propsList = new List(Atom.createAtom("visible"), propsList);
+            propsList = new ConsList(Atom.createAtom("built_in"), propsList);
+            propsList = new ConsList(Atom.createAtom("visible"), propsList);
         }
 
         if (getJIPEngine().getGlobalDB().isExternal(strFunc)) {
-            propsList = new List(Atom.createAtom("built_in"), propsList);
-            propsList = new List(Atom.createAtom("foreign"), propsList);
-            propsList = new List(Atom.createAtom("visible"), propsList);
+            propsList = new ConsList(Atom.createAtom("built_in"), propsList);
+            propsList = new ConsList(Atom.createAtom("foreign"), propsList);
+            propsList = new ConsList(Atom.createAtom("visible"), propsList);
 
         }
 
@@ -82,11 +82,11 @@ final class PredicateProperties2 extends BuiltIn {
         String strFile = getJIPEngine().getGlobalDB().getFile(strFunc);
         if (strFile != null) {
             // se � definito in un file
-            propsList = new List(new Functor("file/1", new ConsCell(Atom.createAtom(strFile), null)), propsList);
+            propsList = new ConsList(new Functor("file/1", new ConsCell(Atom.createAtom(strFile), null)), propsList);
 
             // se � interpretato
             if (!BuiltInFactory.isBuiltIn(strFunc) && !getJIPEngine().getGlobalDB().isExternal(strFunc)) {
-                propsList = new List(Atom.createAtom("interpreted"), propsList);
+                propsList = new ConsList(Atom.createAtom("interpreted"), propsList);
             }
         }
 

@@ -718,10 +718,10 @@ public class JIPEngine implements Serializable {
      * @see com.ugos.jiprolog.engine.JIPEngine#setSearchPath
      */
     public final void packFiles(final String[] strFileNames, final String strDestinationFile) throws JIPSyntaxErrorException, FileNotFoundException, IOException {
-        List fileList = List.NIL;
+        ConsList fileList = ConsList.NIL;
 
         for (String file : strFileNames) {
-            fileList = new List(Atom.createAtom(file), fileList);
+            fileList = new ConsList(Atom.createAtom(file), fileList);
         }
 
         Pack2.pack(fileList, strDestinationFile, this);

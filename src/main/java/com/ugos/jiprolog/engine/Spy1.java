@@ -33,9 +33,9 @@ final class Spy1 extends BuiltIn {
     final void spy(PrologObject pred) {
         if (pred == null) {
             return;
-        } else if (pred instanceof List) {
-            spy(getRealTerm(((List) pred).getHead()));
-            spy(((List) pred).getTail());
+        } else if (pred instanceof ConsList) {
+            spy(getRealTerm(((ConsList) pred).getHead()));
+            spy(((ConsList) pred).getTail());
         } else if (pred instanceof Functor) {
             // head deve essere instanza di funtore /2 del tipo name/arity
             if (pred instanceof Functor && ((Functor) pred).getAtom().equals(Atom.SLASHSLASH)) {

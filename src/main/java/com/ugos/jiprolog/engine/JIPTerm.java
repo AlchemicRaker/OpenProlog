@@ -298,8 +298,8 @@ public class JIPTerm extends Object implements Clearable, Serializable, Cloneabl
     static final JIPTerm getJIPTerm(final PrologObject obj) {
         if (obj instanceof PString)
             return new JIPString((PString) obj);
-        else if (obj instanceof List)
-            return new JIPList((List) obj);
+        else if (obj instanceof ConsList)
+            return new JIPList((ConsList) obj);
         else if (obj instanceof Atom)
             return new JIPAtom((Atom) obj);
         else if (obj instanceof Expression)

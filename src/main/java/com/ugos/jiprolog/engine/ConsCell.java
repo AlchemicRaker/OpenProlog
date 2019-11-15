@@ -28,11 +28,11 @@ import java.util.Hashtable;
 
 //import java.io.Serializable;
 
-class ConsCell extends PrologObject //implements Serializable
+public class ConsCell extends PrologObject //implements Serializable
 {
     final static long serialVersionUID = 300000003L;
 
-    static final ConsCell NIL = List.NIL;//new ConsCell(null, null);
+    static final ConsCell NIL = ConsList.NIL;//new ConsCell(null, null);
 
     protected PrologObject m_head;
     protected PrologObject m_tail;
@@ -65,7 +65,7 @@ class ConsCell extends PrologObject //implements Serializable
 
         // if List or Clause or functor then false
         if ((obj instanceof Functor) ||
-                (obj instanceof List))
+                (obj instanceof ConsList))
             return false;
 
         if (obj instanceof ConsCell) {
@@ -174,7 +174,7 @@ class ConsCell extends PrologObject //implements Serializable
     }
 
     public final boolean isNil() {
-        return this == List.NIL || m_head == null && m_tail == null;
+        return this == ConsList.NIL || m_head == null && m_tail == null;
     }
 
     public final void clear() {
@@ -350,7 +350,7 @@ class ConsCell extends PrologObject //implements Serializable
             {
                 if (m_head == ((ConsCell) obj).m_head || m_head.termEquals(((ConsCell) obj).m_head)) {
                     return (m_tail == ((ConsCell) obj).m_tail) ||
-                            (m_tail == null && (((ConsCell) obj).m_tail.termEquals(List.NIL) || ((ConsCell) obj).m_tail.termEquals(ConsCell.NIL))) ||
+                            (m_tail == null && (((ConsCell) obj).m_tail.termEquals(ConsList.NIL) || ((ConsCell) obj).m_tail.termEquals(ConsCell.NIL))) ||
                             (m_tail != null && m_tail.termEquals(((ConsCell) obj).m_tail));
                 }
             }

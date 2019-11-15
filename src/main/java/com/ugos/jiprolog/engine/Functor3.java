@@ -33,7 +33,7 @@ final class Functor3 extends BuiltIn {
             if (name == null)
                 throw new JIPInstantiationException(2);
 
-            if (!(name instanceof Expression) && !(name instanceof Atom) && !(name.unifiable(List.NIL)))
+            if (!(name instanceof Expression) && !(name instanceof Atom) && !(name.unifiable(ConsList.NIL)))
                 throw new JIPTypeException(JIPTypeException.ATOMIC, name);
 
 
@@ -42,7 +42,7 @@ final class Functor3 extends BuiltIn {
 
             ConsCell newFunc;
             try {
-                if (name.unifiable(List.NIL)) {
+                if (name.unifiable(ConsList.NIL)) {
                     return getParam(1).unify(name, varsTbl) && getParam(3).unify(Expression.createNumber(0), varsTbl);
                 }
 
@@ -68,7 +68,7 @@ final class Functor3 extends BuiltIn {
 
                 if (((Atom) name).getName().equals(".")) {
                     if ((int) ((Expression) arity).getValue() == 2) {
-                        newFunc = new List(new Variable(false), new Variable(false));
+                        newFunc = new ConsList(new Variable(false), new Variable(false));
                         return newFunc.unify(getParam(1), varsTbl);
                     }
                 }
@@ -98,9 +98,9 @@ final class Functor3 extends BuiltIn {
         } else {
             PrologObject funcName;
             Expression funcArity;
-            if (func instanceof List) {
-                if (func.unifiable(List.NIL)) {
-                    funcName = List.NIL;
+            if (func instanceof ConsList) {
+                if (func.unifiable(ConsList.NIL)) {
+                    funcName = ConsList.NIL;
                     funcArity = Expression.createNumber(0);
                 } else {
                     funcName = Atom.createAtom(".");

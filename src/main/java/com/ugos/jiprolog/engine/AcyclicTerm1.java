@@ -41,8 +41,8 @@ final class AcyclicTerm1 extends BuiltIn {
             return false;
         } else if (term instanceof Functor) {
             return acyclic(((Functor) term).getParams(), termTbl);
-        } else if (term instanceof List) {
-            return acyclic(((List) term).getHead(), termTbl) && acyclic(((List) term).getTail(), termTbl);
+        } else if (term instanceof ConsList) {
+            return acyclic(((ConsList) term).getHead(), termTbl) && acyclic(((ConsList) term).getTail(), termTbl);
         } else if (term instanceof ConsCell) {
             return acyclic(((ConsCell) term).getHead(), termTbl) && acyclic(((ConsCell) term).getTail(), termTbl);
         } else if (term instanceof Variable) {

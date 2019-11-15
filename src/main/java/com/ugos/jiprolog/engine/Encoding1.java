@@ -28,7 +28,7 @@ final class Encoding1 extends Notify2 {
         if (param instanceof Variable) {
             if (!((Variable) param).isBounded()) {
                 if (getJIPEngine().getEncoding() == null)
-                    return param.unify(List.NIL, varsTbl);
+                    return param.unify(ConsList.NIL, varsTbl);
                 else
                     return param.unify(Atom.createAtom(getJIPEngine().getEncoding()), varsTbl);
             } else {

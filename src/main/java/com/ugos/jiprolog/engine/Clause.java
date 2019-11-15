@@ -230,7 +230,7 @@ class Clause extends ConsCell {
             if (name.equals(Atom.SEMICOLON) || name.equals(Atom.IF) || name.equals(Atom.STARIF)) {
                 checkForCallable(((Functor) head).getParams());
             }
-        } else if (head instanceof ConsCell && !(head instanceof List) && !(head instanceof Functor)) {
+        } else if (head instanceof ConsCell && !(head instanceof ConsList) && !(head instanceof Functor)) {
             checkForCallable((ConsCell) head);
         }
 //    	else if(head instanceof PString)
@@ -252,7 +252,7 @@ class Clause extends ConsCell {
                 if (name.equals(Atom.SEMICOLON) || name.equals(Atom.IF) || name.equals(Atom.STARIF)) {
                     checkForCallable(((Functor) head).getParams());
                 }
-            } else if (head instanceof ConsCell && !(head instanceof List) && !(head instanceof Functor)) {
+            } else if (head instanceof ConsCell && !(head instanceof ConsList) && !(head instanceof Functor)) {
                 checkForCallable((ConsCell) head);
             }
 //    		else if(head instanceof PString)

@@ -52,6 +52,12 @@ public final class Expression extends PrologObject //implements Serializable
         return expr;
     }
 
+    public static Expression createNumber(final int intNum) {
+        final Expression expr = new Expression(intNum);
+
+        return expr;
+    }
+
     private Expression(final double dNum) {
         if (Double.isNaN(dNum))
             throw new JIPEvaluationException("undefined");
@@ -692,7 +698,7 @@ public final class Expression extends PrologObject //implements Serializable
                 throw new JIPEvaluationException(JIPEvaluationException.undefined);
 //                throw JIPRuntimeException.create(2, "Wrong number of arguments in expression");
             }
-        } else if (exp instanceof ConsCell && !(exp instanceof List)) {
+        } else if (exp instanceof ConsCell && !(exp instanceof ConsList)) {
             if (((ConsCell) exp).getHeight() != 1)
                 throw new JIPTypeException(JIPTypeException.EVALUABLE, exp);
 
@@ -713,7 +719,7 @@ public final class Expression extends PrologObject //implements Serializable
         if (obj instanceof Variable) {
             if (((Variable) obj).isBounded()) {
                 obj = ((Variable) obj).getObject();
-                if (obj.unifiable(List.NIL))
+                if (obj.unifiable(ConsList.NIL))
                     return true;
             } else
                 return false;

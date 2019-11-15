@@ -254,7 +254,7 @@ final class PrologParser {
                             if ("atom".equals(double_quotes)) {
                                 termStack.push(Atom.createAtom(""));
                             } else {
-                                termStack.push(List.NIL);
+                                termStack.push(ConsList.NIL);
                             }
                         } else {
                             String double_quotes = (String) m_engine.getEnvVariable("double_quotes");
@@ -311,7 +311,7 @@ final class PrologParser {
                                 term = translateTerm(STATE_ARG_LIST, lnReader);
 
                                 termStack.pop();
-                                if (!(term instanceof ConsCell) || term instanceof List || term instanceof Functor) {
+                                if (!(term instanceof ConsCell) || term instanceof ConsList || term instanceof Functor) {
                                     term = new ConsCell(term, null);
                                 }
 
@@ -331,7 +331,7 @@ final class PrologParser {
 //                                    System.out.println("term " + term);
 
                                     termStack.pop();
-                                    if (!(term instanceof ConsCell) || term instanceof List || term instanceof Functor) {
+                                    if (!(term instanceof ConsCell) || term instanceof ConsList || term instanceof Functor) {
                                         term = new ConsCell(term, null);
                                     }
 
@@ -353,7 +353,7 @@ final class PrologParser {
 //                                            System.out.println("term " + term);
 
                                         termStack.pop();
-                                        if (!(term instanceof ConsCell) || term instanceof List || term instanceof Functor) {
+                                        if (!(term instanceof ConsCell) || term instanceof ConsList || term instanceof Functor) {
                                             term = new ConsCell(term, null);
                                         }
 
@@ -368,7 +368,7 @@ final class PrologParser {
 //                                                System.out.println("term " + term);
 
                                             termStack.pop();
-                                            if (!(term instanceof ConsCell) || term instanceof List || term instanceof Functor) {
+                                            if (!(term instanceof ConsCell) || term instanceof ConsList || term instanceof Functor) {
                                                 term = new ConsCell(term, null);
                                             }
 
@@ -407,7 +407,7 @@ final class PrologParser {
                                 if (lastObj instanceof Operator) {
                                     Operator lastOp = (Operator) termStack.pop();
                                     termStack.push(Atom.createAtom(lastOp.getName()));
-                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof List) && nState == STATE_ARG_LIST)) {
+                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof ConsList) && nState == STATE_ARG_LIST)) {
                                     termStack.pop();
                                     termStack.push(new ConsCell((ConsCell) lastObj, null));
                                 }
@@ -431,12 +431,12 @@ final class PrologParser {
 
                             //System.out.println("m_nTokCount " + m_nTokCount);
                             if (term == null) {
-                                termStack.push(List.NIL);
-                            } else if (term instanceof List || term instanceof Functor || term instanceof Clause || !(term instanceof ConsCell)) {
+                                termStack.push(ConsList.NIL);
+                            } else if (term instanceof ConsList || term instanceof Functor || term instanceof Clause || !(term instanceof ConsCell)) {
                                 // atom
-                                termStack.push(new List(new ConsCell(term, null)));
+                                termStack.push(new ConsList(new ConsCell(term, null)));
                             } else {
-                                termStack.push(new List((ConsCell) term));
+                                termStack.push(new ConsList((ConsCell) term));
                             }
                         } else if (tok.m_strToken.equals("]")) {
                             lastParenthesis = false;
@@ -445,7 +445,7 @@ final class PrologParser {
                                 if (lastObj instanceof Operator) {
                                     Operator lastOp = (Operator) termStack.pop();
                                     termStack.push(Atom.createAtom(lastOp.getName()));
-                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof List))) {
+                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof ConsList))) {
                                     termStack.pop();
                                     termStack.push(new ConsCell((ConsCell) lastObj, null));
                                 }
@@ -468,7 +468,7 @@ final class PrologParser {
                                 if (lastObj instanceof Operator) {
                                     Operator lastOp = (Operator) termStack.pop();
                                     termStack.push(Atom.createAtom(lastOp.getName()));
-                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof List))) {
+                                } else if (((lastObj instanceof ConsCell) && !(lastObj instanceof Functor) && !(lastObj instanceof ConsList))) {
                                     termStack.pop();
                                     termStack.push(new ConsCell((ConsCell) lastObj, null));
                                 }
@@ -478,7 +478,7 @@ final class PrologParser {
                                 // risolve quello che c'� a sinistra
                                 PrologObject objleft = resolveStack(termStack);
 
-                                if ((objleft instanceof ConsCell) && !(objleft instanceof Functor) && !(objleft instanceof List)) {
+                                if ((objleft instanceof ConsCell) && !(objleft instanceof Functor) && !(objleft instanceof ConsList)) {
                                     ((ConsCell) objleft).setLast(objRight);
                                     termStack.push(objleft);
                                 } else {
@@ -519,7 +519,7 @@ final class PrologParser {
                             }
                         } else if (tok.m_strToken.equals("[]")) {
                             lastParenthesis = false;
-                            termStack.push(List.NIL);
+                            termStack.push(ConsList.NIL);
                         } else if (m_opManager.contains(tok.m_strToken)) {
                             Operator curOp = m_opManager.get(tok.m_strToken);
                             // cerca tra gli operatori
@@ -833,14 +833,14 @@ final class PrologParser {
         {
             if ((op.getName().equals("-") || op.getName().equals("+")) && obj1 instanceof Expression) {
                 return Expression.createNumber(op.getName() + obj1.toString());
-            } else if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
+            } else if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
                 obj1 = new ConsCell(obj1, null);
             }
 
             return makeFunctor(Atom.createAtom(op.getName()), (ConsCell) obj1);
         } else if (op.isPostfix())// postfix and prefix
         {
-            if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
+            if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
                 obj1 = new ConsCell(obj1, null);
             }
 
@@ -860,7 +860,7 @@ final class PrologParser {
             if (obj2 instanceof Operator && ((Operator) obj2).getPrefix() != null) {
                 if (op.getPrefix() != null && (termStack.size() == 0)) {
                     //sono entrambi prefissi
-                    if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
+                    if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
                         obj1 = new ConsCell(obj1, null);
                     }
 
@@ -882,7 +882,7 @@ final class PrologParser {
 //	                // trasforma in atomo
                     obj2 = Atom.createAtom(((Operator) obj2).getName());
                 } else {
-                    if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
+                    if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
                         obj1 = new ConsCell(obj1, null);
                     }
 
@@ -894,13 +894,13 @@ final class PrologParser {
             }
 
             if (op.getName().equals(",")) {
-                if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor) {
+                if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor) {
                     obj1 = new ConsCell(obj1, null);
                 }
 
                 return new ConsCell((PrologObject) obj2, obj1);
             } else {
-                if ((!(obj1 instanceof ConsCell)) || obj1 instanceof List || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
+                if ((!(obj1 instanceof ConsCell)) || obj1 instanceof ConsList || obj1 instanceof Functor || ((ConsCell) obj1).getHeight() != 1) {
                     obj1 = new ConsCell(obj1, null);
                 }
 
@@ -973,18 +973,18 @@ final class PrologParser {
         }
     }
 
-    private final static List makeList(ConsCell params) {
+    private final static ConsList makeList(ConsCell params) {
         if (params.getTail() != null) {
-            return new List(params.getHead(), ((ConsCell) params.getTail()).getHead());
+            return new ConsList(params.getHead(), ((ConsCell) params.getTail()).getHead());
         } else {
-            return new List(params.getHead(), null);
+            return new ConsList(params.getHead(), null);
         }
     }
 
     private final static ConsCell makeCons(ConsCell params) {
         if (params.getTail() != null) {
             final PrologObject obj = ((ConsCell) params.getTail()).getHead();
-            if (obj instanceof ConsCell && !(obj instanceof List) && !(obj instanceof Functor))
+            if (obj instanceof ConsCell && !(obj instanceof ConsList) && !(obj instanceof Functor))
                 return new ConsCell(params.getHead(), obj);
             else
                 return new ConsCell(params.getHead(), new ConsCell(obj, null));

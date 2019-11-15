@@ -31,9 +31,9 @@ final class Chars1 extends BuiltIn {
             return term instanceof Atom;
         } else if (term instanceof PString) {
             return true;
-        } else if (term instanceof List) {
+        } else if (term instanceof ConsList) {
             try {
-                new PString((List) term, "chars".equals(double_quotes));
+                new PString((ConsList) term, "chars".equals(double_quotes));
 
                 return true;
             } catch (JIPTypeException ex) {

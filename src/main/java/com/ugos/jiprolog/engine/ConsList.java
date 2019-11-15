@@ -26,16 +26,16 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-class List extends ConsCell {
+public class ConsList extends ConsCell {
     final static long serialVersionUID = 300000006L;
 
-    public final static List NIL = new List(null, null);
+    public final static ConsList NIL = new ConsList(null, null);
 
-    public List(final PrologObject head, final PrologObject tail) {
-        super(head, ((tail instanceof List || tail instanceof Functor) ? tail : ((tail instanceof ConsCell) ? new List((ConsCell) tail) : tail)));
+    public ConsList(final PrologObject head, final PrologObject tail) {
+        super(head, ((tail instanceof ConsList || tail instanceof Functor) ? tail : ((tail instanceof ConsCell) ? new ConsList((ConsCell) tail) : tail)));
     }
 
-    public List(final ConsCell list) {
+    public ConsList(final ConsCell list) {
         this((list == null) ? null : list.getHead(), (list == null) ? null : list.getTail());
         //super(list.getHead(), list.getTail());
     }
@@ -48,7 +48,7 @@ class List extends ConsCell {
                 return ((Variable) obj)._unify(this, table);
         }
 
-        if (obj instanceof List) {
+        if (obj instanceof ConsList) {
 //            System.out.println("*List Match: m_head " + m_head);
             if (m_head != null) {
                 if (((ConsCell) obj).m_head == null)
@@ -65,7 +65,7 @@ class List extends ConsCell {
                         } else if (((ConsCell) obj).m_tail == null) {
                             return true;
                         } else {
-                            return ((ConsCell) obj).m_tail.unify(List.NIL, table);
+                            return ((ConsCell) obj).m_tail.unify(ConsList.NIL, table);
                         }
                     }
                 } else {
@@ -92,15 +92,15 @@ class List extends ConsCell {
 
     public PrologObject copy(final boolean flat, final Hashtable<Variable, PrologObject> varTable) {
         if (m_head != null) {
-            return new List(m_head.copy(flat, varTable),
+            return new ConsList(m_head.copy(flat, varTable),
                     (m_tail == null) ? null : m_tail.copy(flat, varTable));
         } else {
-            return List.NIL;
+            return ConsList.NIL;
         }
     }
 
-    public final List reverse() {
-        return new List(super.reverse());
+    public final ConsList reverse() {
+        return new ConsList(super.reverse());
     }
 
     public final ConsCell getConsCell() {
@@ -110,11 +110,11 @@ class List extends ConsCell {
         if (m_tail == null)
             return new ConsCell(m_head, null);
         else {
-            List tail = ((List) BuiltIn.getRealTerm(m_tail));
+            ConsList tail = ((ConsList) BuiltIn.getRealTerm(m_tail));
             if (tail == null)
                 return new ConsCell(m_head, tail);
             else
-                return new ConsCell(m_head, ((List) BuiltIn.getRealTerm(m_tail)).getConsCell());
+                return new ConsCell(m_head, ((ConsList) BuiltIn.getRealTerm(m_tail)).getConsCell());
         }
     }
 
@@ -145,11 +145,11 @@ class List extends ConsCell {
      * @return new JIPList object
      * @see com.ugos.jiprolog.engine.JIPTerm
      */
-    public static final List create(final Collection<PrologObject> terms) {
-        List list = null;
+    public static final ConsList create(final Collection<PrologObject> terms) {
+        ConsList list = null;
 
         for (PrologObject term : terms) {
-            list = new List(term, list);
+            list = new ConsList(term, list);
         }
 
         return list != null ? list.reverse() : NIL;

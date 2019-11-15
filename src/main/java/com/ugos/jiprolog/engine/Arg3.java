@@ -62,7 +62,7 @@ final class Arg3 extends BuiltIn {
                 else if (index == 2) {
                     param = ((ConsCell) term).getTail();
                     if (param == null)
-                        param = List.NIL;
+                        param = ConsList.NIL;
                 } else
                     return false;
             }

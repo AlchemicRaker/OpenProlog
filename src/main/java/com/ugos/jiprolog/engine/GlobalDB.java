@@ -368,7 +368,7 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
         if (pred instanceof Atom)
             throw new JIPTypeException(JIPTypeException.PREDICATE_INDICATOR, pred);
 
-        if (!(pred instanceof List))
+        if (!(pred instanceof ConsList))
             pred = new ConsCell(pred, null);
 
         StringBuilderEx strModuleName = sbUSER_MODULE_AUX.resetToInitialValue();
@@ -715,13 +715,13 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
 //
 //            return new PString(new List(fixTerm(((ConsCell)term).getHead()), fixTerm(((ConsCell)term).getTail())), this.jipEngine);
 //        }
-        else if (term instanceof List) {
+        else if (term instanceof ConsList) {
             //System.out.println("ConsCell");
 
-            if (((List) term).isNil())
+            if (((ConsList) term).isNil())
                 return term;
             else
-                return new List(fixTerm(((ConsCell) term).getHead()), fixTerm(((ConsCell) term).getTail()));
+                return new ConsList(fixTerm(((ConsCell) term).getHead()), fixTerm(((ConsCell) term).getTail()));
         } else if (term instanceof Clause) {
             //System.out.println("Clause");
             Clause clause = new Clause(((Clause) term).getModuleName(), (Functor) fixTerm(((ConsCell) term).getHead()), (ConsCell) fixTerm(((ConsCell) term).getTail()));

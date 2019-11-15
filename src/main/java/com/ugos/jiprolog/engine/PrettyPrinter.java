@@ -54,7 +54,7 @@ final class PrettyPrinter extends Object {
 //        {
 //            return printPString((PString)obj);
 //        }
-        else if (obj instanceof List) {
+        else if (obj instanceof ConsList) {
             printList(obj, opManager, bQ, varTable, sb);
         } else if (obj instanceof ConsCell) {
             printCons(obj, opManager, bQ, varTable, sb);
@@ -275,7 +275,7 @@ final class PrettyPrinter extends Object {
             sb.append(' ');
 
             //System.out.println(tail.getClass());
-            if (tail instanceof List || tail instanceof Functor || !(tail instanceof ConsCell)) {
+            if (tail instanceof ConsList || tail instanceof Functor || !(tail instanceof ConsCell)) {
                 print(tail, opManager, bQ, varTable, sb); // second
             } else {
                 print(((ConsCell) tail).getHead(), opManager, bQ, varTable, sb); // second;
@@ -310,17 +310,17 @@ final class PrettyPrinter extends Object {
     private static final void printList(final PrologObject obj, final OperatorManager opManager, final boolean bQ, Hashtable<String, Variable> varTable, StringBuilder sb) {
         if (opManager == null) // canonical
         {
-            if (((List) obj).isNil()) {
+            if (((ConsList) obj).isNil()) {
                 sb.append("[]");
-            } else if (((List) obj).getTail() != null) {
+            } else if (((ConsList) obj).getTail() != null) {
                 sb.append("'.'(");
-                print(((List) obj).getHead(), null, bQ, varTable, sb);
+                print(((ConsList) obj).getHead(), null, bQ, varTable, sb);
                 sb.append(",");
-                print(((List) obj).getTail(), null, bQ, varTable, sb);
+                print(((ConsList) obj).getTail(), null, bQ, varTable, sb);
                 sb.append(')');
             } else {
                 sb.append("'.'(");
-                print(((List) obj).getHead(), null, bQ, varTable, sb);
+                print(((ConsList) obj).getHead(), null, bQ, varTable, sb);
                 sb.append(",[])");
             }
         } else {
@@ -430,7 +430,7 @@ final class PrettyPrinter extends Object {
                         head = BuiltIn.getRealTerm(head);
 
 //                    System.out.println(head.getClass());
-                    if (head instanceof ConsCell && !(head instanceof Functor) && !(head instanceof List) && !(head instanceof Clause)) {
+                    if (head instanceof ConsCell && !(head instanceof Functor) && !(head instanceof ConsList) && !(head instanceof Clause)) {
                         sb.append('(');
                         printCons(head, opManager, bQ, varTable, sb);
                         sb.append(')');

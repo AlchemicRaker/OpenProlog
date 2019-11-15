@@ -35,7 +35,7 @@ final class Pack2 extends BuiltIn {
         final PrologObject destinationFile = getRealTerm(getParam(2));
 
 
-        if (!(fileList instanceof List))
+        if (!(fileList instanceof ConsList))
             throw new JIPTypeException(JIPTypeException.LIST, fileList);
 
 
@@ -43,12 +43,12 @@ final class Pack2 extends BuiltIn {
             strDestinationFile = ((Atom) destinationFile).getName();
         } else if (destinationFile instanceof PString) {
             strDestinationFile = ((PString) destinationFile).getString();
-        } else if (destinationFile.unifiable(List.NIL)) {
+        } else if (destinationFile.unifiable(ConsList.NIL)) {
             throw new JIPTypeException(JIPTypeException.ATOM_OR_STRING, destinationFile);
         }
 
         try {
-            pack((List) fileList, strDestinationFile, getJIPEngine());
+            pack((ConsList) fileList, strDestinationFile, getJIPEngine());
         } catch (FileNotFoundException e) {
             throw JIPExistenceException.createSourceSynkException(destinationFile);
         } catch (IOException e) {
@@ -58,7 +58,7 @@ final class Pack2 extends BuiltIn {
         return true;
     }
 
-    public static final void pack(List fileList, String destinationFile, final JIPEngine engine) throws FileNotFoundException, IOException {
+    public static final void pack(ConsList fileList, String destinationFile, final JIPEngine engine) throws FileNotFoundException, IOException {
         InputStream ins = null;
 
         File outf = new File(destinationFile);

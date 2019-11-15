@@ -47,14 +47,14 @@ class BagOf3 extends BuiltIn {
             }
         }
 
-        List solList = null;
+        ConsList solList = null;
 
         while (!solStack.isEmpty()) {
-            solList = new List((PrologObject) solStack.pop(), solList);
+            solList = new ConsList((PrologObject) solStack.pop(), solList);
         }
 
         if (solList == null)
-            solList = List.NIL;
+            solList = ConsList.NIL;
 
         return res.unify(solList, varsTbl);
     }

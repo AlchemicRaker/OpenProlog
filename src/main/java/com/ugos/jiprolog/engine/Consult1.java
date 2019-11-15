@@ -41,9 +41,9 @@ class Consult1 extends BuiltIn {
             } else if (path instanceof PString) {
                 strPath = ((PString) path).getString();
                 consult(strPath, getJIPEngine(), getQueryHandle());
-            } else if (path instanceof List) {
-                PrologObject head = getRealTerm(((List) path).getHead());
-                PrologObject tail = getRealTerm(((List) path).getTail());
+            } else if (path instanceof ConsList) {
+                PrologObject head = getRealTerm(((ConsList) path).getHead());
+                PrologObject tail = getRealTerm(((ConsList) path).getTail());
                 while (head != null) {
                     if (head instanceof Atom) {
                         strPath = ((Atom) head).getName();
@@ -56,8 +56,8 @@ class Consult1 extends BuiltIn {
                     consult(strPath, getJIPEngine(), getQueryHandle());
 
                     if (tail != null) {
-                        head = getRealTerm(((List) tail).getHead());
-                        tail = getRealTerm(((List) tail).getTail());
+                        head = getRealTerm(((ConsList) tail).getHead());
+                        tail = getRealTerm(((ConsList) tail).getTail());
                     } else
                         head = null;
                 }
@@ -245,7 +245,7 @@ class Consult1 extends BuiltIn {
 
                     strModuleName = ((Atom) params.getHead()).getName();
                     exportTbl.put("#module", strModuleName);
-                    List exportList = (List) ((ConsCell) params.getTail()).getHead();
+                    ConsList exportList = (ConsList) ((ConsCell) params.getTail()).getHead();
                     while (exportList != null) {
                         PrologObject head = getRealTerm(exportList.getHead());
                         //System.out.println(head);  //DBG
@@ -261,7 +261,7 @@ class Consult1 extends BuiltIn {
                             //throw new JIPTypeException(1, head);
                         }
 
-                        exportList = (List) exportList.getTail();
+                        exportList = (ConsList) exportList.getTail();
                     }
                 }
                 // :-initialization/1

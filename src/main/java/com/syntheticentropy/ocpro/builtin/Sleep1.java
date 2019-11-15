@@ -1,13 +1,12 @@
-package com.syntheticentropy.ocpro.jipxcall;
+package com.syntheticentropy.ocpro.builtin;
 
-import com.ugos.jiprolog.engine.BuiltIn;
 import com.ugos.jiprolog.engine.Expression;
 import com.ugos.jiprolog.engine.PrologObject;
 import com.ugos.jiprolog.engine.Variable;
 
 import java.util.Hashtable;
 
-public class Sleep extends BuiltIn {
+public class Sleep1 extends OcproBuiltIn {
 
     @Override
     public boolean unify(Hashtable<Variable, Variable> m_varsTbl) {
@@ -18,7 +17,7 @@ public class Sleep extends BuiltIn {
 
         this.m_jipEngine.getOwner().waitingCall((int) ((Expression) test).getValue());
 
-        return false;
+        return true;
     }
 
     @Override

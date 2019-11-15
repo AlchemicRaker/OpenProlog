@@ -91,7 +91,7 @@ public class JIPTypeException extends JIPRuntimeException {
         this(typeError, culprit.getRealTerm());
     }
 
-    JIPTypeException(int typeError, PrologObject culprit) {
+    public JIPTypeException(int typeError, PrologObject culprit) {
         if (typeError < UNDEFINED && typeError > CALLABLE)
             this.typeError = s_stringMap[UNDEFINED];
         else
@@ -100,7 +100,7 @@ public class JIPTypeException extends JIPRuntimeException {
         this.culprit = culprit;
     }
 
-    JIPTypeException(int typeError, PrologObject culprit, JIPEngine engine) {
+    public JIPTypeException(int typeError, PrologObject culprit, JIPEngine engine) {
         this(typeError, culprit);
         m_engine = engine;
     }

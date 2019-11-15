@@ -183,7 +183,7 @@ class Functor extends ConsCell {
                     if (m_tail != null) {
                         return ((ConsCell) obj).m_tail != null && m_tail.termEquals(((ConsCell) obj).m_tail);
                     } else {
-                        return (((ConsCell) obj).m_tail == null || (((ConsCell) obj).m_tail.termEquals(List.NIL)));
+                        return (((ConsCell) obj).m_tail == null || (((ConsCell) obj).m_tail.termEquals(ConsList.NIL)));
                     }
                 }
             }

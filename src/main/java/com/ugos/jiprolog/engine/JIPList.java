@@ -34,14 +34,14 @@ import java.util.Vector;
 public class JIPList extends JIPTerm {
     private final static long serialVersionUID = 300000001L;
 
-    JIPList(List list) {
+    JIPList(ConsList list) {
         super(list);
     }
 
     /**
      * Empty list or nil []
      */
-    public static final JIPList NIL = new JIPList(List.NIL);
+    public static final JIPList NIL = new JIPList(ConsList.NIL);
 
     /**
      * Creates a new List
@@ -54,14 +54,14 @@ public class JIPList extends JIPTerm {
     public static final JIPList create(final JIPTerm head, final JIPTerm tail) {
         if (head != null) {
             if (tail != null)
-                return new JIPList(new List(head.getTerm(), tail.getTerm()));
+                return new JIPList(new ConsList(head.getTerm(), tail.getTerm()));
             else
-                return new JIPList(new List(head.getTerm(), null));
+                return new JIPList(new ConsList(head.getTerm(), null));
         } else {
             if (tail != null)
-                return new JIPList(new List(null, tail.getTerm()));
+                return new JIPList(new ConsList(null, tail.getTerm()));
             else
-                return new JIPList(List.NIL);
+                return new JIPList(ConsList.NIL);
         }
     }
 
@@ -107,7 +107,7 @@ public class JIPList extends JIPTerm {
      * @return new JIPList object by appending list1 and list2
      */
     public static final JIPList append(final JIPList head, final JIPList tail) {
-        List cell = new List(ConsCell.append((ConsCell) head.getTerm(), (ConsCell) tail.getTerm()));
+        ConsList cell = new ConsList(ConsCell.append((ConsCell) head.getTerm(), (ConsCell) tail.getTerm()));
         return new JIPList(cell);
     }
 
@@ -117,7 +117,7 @@ public class JIPList extends JIPTerm {
      * @return new JIPList object by reversing this JIPList object
      */
     public final JIPList reverse() {
-        return new JIPList(new List(((ConsCell) getTerm()).reverse()));
+        return new JIPList(new ConsList(((ConsCell) getTerm()).reverse()));
     }
 
     /**
@@ -176,7 +176,7 @@ public class JIPList extends JIPTerm {
      * Returns true if this list is []. <br>
      */
     public final boolean isNIL() {
-        return ((List) getTerm()).isNil();
+        return ((ConsList) getTerm()).isNil();
     }
 
     /**
@@ -204,7 +204,7 @@ public class JIPList extends JIPTerm {
      * @return the index in the list where the given term is found<br>
      */
     public int member(JIPTerm term) {
-        return ((List) getTerm()).member(term.getTerm());
+        return ((ConsList) getTerm()).member(term.getTerm());
     }
 
     /**

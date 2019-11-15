@@ -36,7 +36,7 @@ final class SearchPath1 extends BuiltIn {
         if (param instanceof Variable) {
             if (!((Variable) param).isBounded()) {
                 if (getJIPEngine().getSearchPath() == null)
-                    return param.unify(List.NIL, varsTbl);
+                    return param.unify(ConsList.NIL, varsTbl);
 
                 return param.unify(Atom.createAtom(getJIPEngine().getSearchPath()), varsTbl);
             } else {

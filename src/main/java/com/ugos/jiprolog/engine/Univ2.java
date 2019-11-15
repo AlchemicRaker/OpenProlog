@@ -34,10 +34,10 @@ final class Univ2 extends BuiltIn {
             if (param == null)
                 throw new JIPInstantiationException(2);
 
-            if (!(param instanceof List))
+            if (!(param instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, param);
 
-            if (param.unifiable(List.NIL))
+            if (param.unifiable(ConsList.NIL))
                 throw new JIPDomainException("non_empty_list", param);
 
             try {
@@ -50,7 +50,7 @@ final class Univ2 extends BuiltIn {
                     if (params != null)  // come si comporta quintus
                     {
                         params = getRealTerm(params);
-                        if (params != null && params != List.NIL && params != ConsCell.NIL)
+                        if (params != null && params != ConsList.NIL && params != ConsCell.NIL)
                             throw new JIPTypeException(JIPTypeException.ATOM, head);
                     }
 
@@ -67,11 +67,11 @@ final class Univ2 extends BuiltIn {
                             throw new JIPInstantiationException(2);
                         }
 
-                        int nArity = ((List) params).getHeight();
+                        int nArity = ((ConsList) params).getHeight();
                         if (nArity == 0) {
                             list = head;
                         } else {
-                            ConsCell funparms = ((List) params).getConsCell();
+                            ConsCell funparms = ((ConsList) params).getConsCell();
 
 //                          System.out.println("funparams " + funparms);
                             final String strName = ((Atom) head).getName() + "/" + Integer.toString(nArity);
@@ -89,7 +89,7 @@ final class Univ2 extends BuiltIn {
                     }
                 } else if (head == null) {
                     throw new JIPInstantiationException(2);
-                } else if (((List) param).getHeight() == 1) {
+                } else if (((ConsList) param).getHeight() == 1) {
                     throw new JIPTypeException(JIPTypeException.ATOMIC, head);
                 } else
                     throw new JIPTypeException(JIPTypeException.ATOM, head);
@@ -99,11 +99,11 @@ final class Univ2 extends BuiltIn {
             }
         } else {
             if (func instanceof Functor)
-                term = new List(Atom.createAtom(((Functor) func).getFriendlyName()), new List(((Functor) func).getParams()));
-            else if (func instanceof ConsCell && !(func instanceof List))
-                term = new List(Atom.createAtom(","), new List((ConsCell) func));
+                term = new ConsList(Atom.createAtom(((Functor) func).getFriendlyName()), new ConsList(((Functor) func).getParams()));
+            else if (func instanceof ConsCell && !(func instanceof ConsList))
+                term = new ConsList(Atom.createAtom(","), new ConsList((ConsCell) func));
             else
-                term = new List(func, null);
+                term = new ConsList(func, null);
 
             list = getParam(2);
         }

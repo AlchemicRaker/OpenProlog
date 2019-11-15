@@ -17,13 +17,13 @@ import java.util.function.Supplier;
 @Architecture.Name("Prolog")
 public class PrologArchitecture implements Architecture {
 
-    final Machine machine;
+    public final Machine machine;
 
     private PrologVM vm;
 
-    private Supplier<Object> synchronizedSupplier;
-    private Object synchronizedResult;
-    private FutureTask<Object> synchronizedFutureTask;
+    private Supplier<Object[]> synchronizedSupplier;
+    private Object[] synchronizedResult;
+    private FutureTask<Object[]> synchronizedFutureTask;
 
     private VMResponse vmQueryResponse;
     private FutureTask<Object> vmQueryResponseFutureTask;
@@ -83,7 +83,7 @@ public class PrologArchitecture implements Architecture {
                 if (isSynchronizedReturn) {
                     // this is any component/invoke query
                     // update already prepared in runSynchronized
-                    FutureTask<Object> tmpSyncTask = synchronizedFutureTask;
+                    FutureTask<Object[]> tmpSyncTask = synchronizedFutureTask;
 
                     synchronizedFutureTask = null;
                     synchronizedSupplier = null;
@@ -93,7 +93,7 @@ public class PrologArchitecture implements Architecture {
                     // this must be a wait() query
                     // let the wait query handle iterating through signals
                     // we just need to wake it up
-                    FutureTask<Object> tmpSyncTask = synchronizedFutureTask;
+                    FutureTask<Object[]> tmpSyncTask = synchronizedFutureTask;
 
                     synchronizedFutureTask = null;
 
@@ -109,7 +109,8 @@ public class PrologArchitecture implements Architecture {
         }
         // (magical time where prolog engine resolves part of the query)
         try {
-            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
+            vmQueryResponseFutureTask.get(30, TimeUnit.SECONDS);
+//            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
 //            return new ExecutionResult.Error("Some problem eh?");
         }
@@ -134,10 +135,10 @@ public class PrologArchitecture implements Architecture {
     }
 
     // a query calls this
-    public Object synchronizedCall(Supplier<Object> task) {
+    public Object[] synchronizedCall(Supplier<Object[]> task) {
         synchronizedSupplier = task;
-        synchronizedFutureTask = new FutureTask<Object>(() -> {
-            Object result = synchronizedResult;
+        synchronizedFutureTask = new FutureTask<>(() -> {
+            Object[] result = synchronizedResult;
             synchronizedResult = null;
             return result;
         });
@@ -157,7 +158,7 @@ public class PrologArchitecture implements Architecture {
 
     // a query calls this
     public void waitingCall(int ticks) {
-        synchronizedFutureTask = new FutureTask<Object>(() -> "");
+        synchronizedFutureTask = new FutureTask<>(() -> new Object[0]);
 
         // let the architecture know the query is waiting
         vmQueryResponse = VMResponse.Wait;

@@ -27,7 +27,7 @@ import java.util.Hashtable;
 
 //import java.io.Serializable;
 
-final class Atom extends PrologObject //implements Serializable
+public final class Atom extends PrologObject //implements Serializable
 {
 
     final static long serialVersionUID = 300000001L;
@@ -146,7 +146,7 @@ final class Atom extends PrologObject //implements Serializable
 
         if (obj instanceof Atom)
             return this.equals(obj);//m_strAtom.equals(((Atom)obj).m_strAtom);
-        else if (obj instanceof List)
+        else if (obj instanceof ConsList)
             return m_strAtom.equals("[]") && ((ConsCell) obj).isNil();
 
         return false;

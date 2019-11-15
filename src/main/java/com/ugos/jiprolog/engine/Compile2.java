@@ -46,7 +46,7 @@ final class Compile2 extends BuiltIn {
             strDestinationFolder = ((Atom) destinationFolder).getName();
         else if (destinationFolder instanceof PString)
             strDestinationFolder = ((PString) destinationFolder).getString();
-        else if (destinationFolder.unifiable(List.NIL))
+        else if (destinationFolder.unifiable(ConsList.NIL))
             strDestinationFolder = null;
         else
             throw new JIPTypeException(JIPTypeException.ATOM_OR_STRING, path);

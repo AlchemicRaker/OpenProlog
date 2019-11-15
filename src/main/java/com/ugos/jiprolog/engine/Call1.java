@@ -77,7 +77,7 @@ public class Call1 extends BuiltIn {
 
             if (BuiltInFactory.isBuiltIn(((Functor) goal).getName()))
                 goal = new BuiltInPredicate(((Functor) goal));
-        } else if (param instanceof List) {
+        } else if (param instanceof ConsList) {
             goal = param;
         } else if (param instanceof ConsCell) {
             // TODO wrapping naked vars

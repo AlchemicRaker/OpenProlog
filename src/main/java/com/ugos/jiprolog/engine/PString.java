@@ -24,7 +24,7 @@ package com.ugos.jiprolog.engine;
 
 import java.util.Hashtable;
 
-final class PString extends List //implements Serializable
+final class PString extends ConsList //implements Serializable
 {
     final static long serialVersionUID = 300000007L;
 
@@ -45,7 +45,7 @@ final class PString extends List //implements Serializable
 //        m_strString = string;
 //    }
 
-    public PString(final List string, boolean chars) {
+    public PString(final ConsList string, boolean chars) {
         super(string);
 
         if (string.isPartial())
@@ -154,7 +154,7 @@ final class PString extends List //implements Serializable
                 return ((Variable) obj)._unify(this, table);
         }
 
-        if (obj instanceof List) {
+        if (obj instanceof ConsList) {
             return super._unify(obj, table);
         }
 //        else if(obj instanceof Variable)
@@ -166,11 +166,11 @@ final class PString extends List //implements Serializable
         }
     }
 
-    private static final List getList(final String string, boolean chars) {
-        List retList = null;
+    private static final ConsList getList(final String string, boolean chars) {
+        ConsList retList = null;
 
         for (int i = string.length() - 1; i >= 0; i--) {
-            retList = new List(chars ? Atom.createAtom(string.substring(i, i + 1)) : Expression.createNumber(string.charAt(i)), retList);
+            retList = new ConsList(chars ? Atom.createAtom(string.substring(i, i + 1)) : Expression.createNumber(string.charAt(i)), retList);
         }
 
         return retList;
@@ -190,7 +190,7 @@ final class PString extends List //implements Serializable
 
         if (obj instanceof PString)
             return m_strString.compareTo(((PString) obj).m_strString) < 0;
-        if (obj instanceof List)
+        if (obj instanceof ConsList)
             return super.lessThen(obj);
         else if (obj instanceof Atom)
             return false;

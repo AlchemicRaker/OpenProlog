@@ -41,9 +41,9 @@ final class Nospy1 extends BuiltIn {
     final void noSpy(PrologObject pred) {
         if (pred == null) {
             return;
-        } else if (pred instanceof List) {
-            noSpy(getRealTerm(((List) pred).getHead()));
-            noSpy(((List) pred).getTail());
+        } else if (pred instanceof ConsList) {
+            noSpy(getRealTerm(((ConsList) pred).getHead()));
+            noSpy(((ConsList) pred).getTail());
         } else if (pred instanceof Functor) {
             // head deve essere instanza di funtore /2 del tipo name/arity
             if (pred instanceof Functor && ((Functor) pred).getAtom().equals(Atom.SLASHSLASH)) {

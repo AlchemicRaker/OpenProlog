@@ -18,14 +18,14 @@ final class Findall4 extends BuiltIn {
             throw new JIPInstantiationException(2);
 
         if (list != null) {
-            if (!(list instanceof List))
+            if (!(list instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
             if (!(((ConsCell) list).isClosedOrPartial()))
                 throw new JIPTypeException(JIPTypeException.LIST, list);
         }
 
         if (tail != null) {
-            if (!(tail instanceof List))
+            if (!(tail instanceof ConsList))
                 throw new JIPTypeException(JIPTypeException.LIST, tail);
             if (!(((ConsCell) tail).isClosedOrPartial()))
                 throw new JIPTypeException(JIPTypeException.LIST, tail);
@@ -50,7 +50,7 @@ final class Findall4 extends BuiltIn {
         m_solList = tail;
 
         while (!solStack.isEmpty()) {
-            m_solList = new List((PrologObject) solStack.pop(), m_solList);
+            m_solList = new ConsList((PrologObject) solStack.pop(), m_solList);
         }
 
         m_wam.closeQuery();

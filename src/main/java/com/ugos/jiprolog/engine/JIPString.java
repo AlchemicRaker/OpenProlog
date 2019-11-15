@@ -47,7 +47,7 @@ public class JIPString extends JIPTerm {
      * @param string JIPList object
      */
     public static final JIPString create(final JIPList string, boolean chars) {
-        return new JIPString(new PString((List) string.getRealTerm(), chars));
+        return new JIPString(new PString((ConsList) string.getRealTerm(), chars));
     }
 
     JIPString(PString str) {

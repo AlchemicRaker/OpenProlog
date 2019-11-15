@@ -54,10 +54,10 @@ final class XCall2 extends BuiltIn {
         }
 
         final PrologObject params = getRealTerm(getParam(2));
-        if (!(params instanceof List))
+        if (!(params instanceof ConsList))
             throw new JIPTypeException(JIPTypeException.LIST, params);
 
-        JIPCons exParams = new JIPCons(((List) params).getConsCell());
+        JIPCons exParams = new JIPCons(((ConsList) params).getConsCell());
 
         Hashtable<JIPVariable, JIPVariable> jipVarsTable = new Hashtable<JIPVariable, JIPVariable>();
         // Invoke JIPXCall class

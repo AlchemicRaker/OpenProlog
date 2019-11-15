@@ -59,9 +59,9 @@ final class IndexedDefaultClausesDatabase extends DefaultClausesDatabase {
         if (key == null) {
             // variable
             addClauseWithVariable(clause, true);
-        } else if (key instanceof List) {
-            if (((List) key).isNil()) {
-                key = List.NIL;
+        } else if (key instanceof ConsList) {
+            if (((ConsList) key).isNil()) {
+                key = ConsList.NIL;
 
                 if (m_clausesAtomTable.containsKey(key)) {
                     m_clausesAtomTable.get(key).add(0, clause);
@@ -123,10 +123,10 @@ final class IndexedDefaultClausesDatabase extends DefaultClausesDatabase {
         if (key == null) {
             // variable
             addClauseWithVariable(clause, false);
-        } else if (key instanceof List) {
+        } else if (key instanceof ConsList) {
 //        	System.out.println("add LIST " + key);
-            if (((List) key).isNil()) {
-                key = List.NIL;
+            if (((ConsList) key).isNil()) {
+                key = ConsList.NIL;
 //        		System.out.println("add key == NIL");
 
                 if (m_clausesAtomTable.containsKey(key)) {
@@ -258,8 +258,8 @@ final class IndexedDefaultClausesDatabase extends DefaultClausesDatabase {
 //	    else if(key instanceof PString)
 //	    {
 //	    }
-        else if (key instanceof List) {
-            if ((((List) key).isNil()) && m_clausesAtomTable.containsKey(key))
+        else if (key instanceof ConsList) {
+            if ((((ConsList) key).isNil()) && m_clausesAtomTable.containsKey(key))
                 removed = m_clausesAtomTable.get(key).removeElement(clause);
 
             removed = m_clausesListVector.removeElement(clause);
@@ -291,9 +291,9 @@ final class IndexedDefaultClausesDatabase extends DefaultClausesDatabase {
 
         if (key == null) {
             clausesVector = m_clausesVector;
-        } else if (key instanceof List) {
-            if (((List) key).isNil()) {
-                key = List.NIL;
+        } else if (key instanceof ConsList) {
+            if (((ConsList) key).isNil()) {
+                key = ConsList.NIL;
 //        		System.out.println("key == NIL");
                 clausesVector = m_clausesAtomTable.get(key);
 

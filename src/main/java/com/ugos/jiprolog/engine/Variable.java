@@ -203,7 +203,7 @@ public final class Variable extends PrologObject//Serializable
             varTbl.put(var, var);
 
             if (obj == null) {
-                var.m_object = List.NIL;
+                var.m_object = ConsList.NIL;
             } else {
                 // Bound to obj
                 if (obj instanceof Variable) {

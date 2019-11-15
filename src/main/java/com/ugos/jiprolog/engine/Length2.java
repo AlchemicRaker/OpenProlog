@@ -47,9 +47,9 @@ final class Length2 extends BuiltIn {
             return Expression.createNumber(s.length()).unify(getParam(2), varsTbl);
 //            throw new JIPTypeException(1, JIPTypeException.INTEGER);
         } else {
-            List list = null;
+            ConsList list = null;
             for (int i = 0; i < (int) ((Expression) length).getValue(); i++) {
-                list = new List(new Variable(false), list);
+                list = new ConsList(new Variable(false), list);
             }
 
             return getParam(1).unify(list, varsTbl);

@@ -79,7 +79,7 @@ public class JIPCons extends JIPTerm {
         return new JIPCons(((ConsCell) getTerm()).reverse());
     }
 
-    JIPCons(final ConsCell cons) {
+    public JIPCons(final ConsCell cons) {
         super(cons);
     }
 
