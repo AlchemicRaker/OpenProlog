@@ -20,6 +20,8 @@
 
 package com.ugos.jiprolog.engine;
 
+import com.syntheticentropy.ocpro.jipxcall.Sleep;
+
 import java.util.Hashtable;
 
 final class BuiltInFactory extends Object {
@@ -145,6 +147,8 @@ final class BuiltInFactory extends Object {
 
         m_builtInTable.put("term_variables/2", new TermVariables2());
         m_builtInTable.put("free_variables/2", new TermVariables2());
+
+        m_builtInTable.put("sleep/1", new Sleep());
 
 //        catch((X = 1, throw(gulp)), E, (write(ok-X), nl)).
         //m_BuiltInTable.put("wait/1",            new Wait1());

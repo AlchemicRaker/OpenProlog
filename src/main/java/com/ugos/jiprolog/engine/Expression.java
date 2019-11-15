@@ -27,7 +27,7 @@ import java.util.Hashtable;
 
 //import java.io.Serializable;
 
-final class Expression extends PrologObject //implements Serializable
+public final class Expression extends PrologObject //implements Serializable
 {
     final static long serialVersionUID = 300000004L;
 

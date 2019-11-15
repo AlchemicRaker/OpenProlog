@@ -28,7 +28,7 @@ final class Halt1 extends BuiltIn {
         if (exitVal instanceof Expression) {
             if (!((Expression) exitVal).isInteger())
                 throw new JIPTypeException(JIPTypeException.INTEGER, exitVal);
-
+            // TODO: this needs a ocpro replacement
             System.exit((int) ((Expression) exitVal).getValue());
         } else if (exitVal == null) {
             throw new JIPInstantiationException(1);

@@ -23,7 +23,7 @@ package com.ugos.jiprolog.engine;
 import java.util.Hashtable;
 
 
-abstract class BuiltIn extends Object {
+public abstract class BuiltIn extends Object {
     private ConsCell m_params = null;
     private WAM m_WAM;
     protected JIPEngine m_jipEngine;
@@ -59,7 +59,7 @@ abstract class BuiltIn extends Object {
         return m_params;
     }
 
-    final PrologObject getParam(final int n) {
+    protected final PrologObject getParam(final int n) {
         return m_params.getTerm(n);
     }
 
@@ -71,7 +71,7 @@ abstract class BuiltIn extends Object {
         return m_predicate;
     }
 
-    static final PrologObject getRealTerm(final PrologObject term) {
+    public static final PrologObject getRealTerm(final PrologObject term) {
         if (term instanceof Variable)
             return ((Variable) term).getObject();
 

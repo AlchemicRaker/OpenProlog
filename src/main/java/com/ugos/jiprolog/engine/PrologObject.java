@@ -30,7 +30,7 @@ import java.util.Vector;
 //#ifndef _MIDP
 //#endif
 
-abstract class PrologObject implements Clearable, Serializable {
+public abstract class PrologObject implements Clearable, Serializable {
     final static long serialVersionUID = 300000001L;
 
     private int line;

@@ -102,6 +102,5 @@ public abstract class JIPXCall {
     public JIPXCall newInstance() throws InstantiationException, IllegalAccessException {
         return getClass().newInstance();
     }
-
 }
 

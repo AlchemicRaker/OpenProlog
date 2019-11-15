@@ -72,7 +72,7 @@ public class PrologArchitecture implements Architecture {
         switch (vm.getState()) {
             case NEW:
                 // Run the EEPROM kernel & all that fun
-                vm.run();
+                vm.start();
                 break;
             case RUNNABLE:
                 // It's already running, queue the message?
@@ -134,7 +134,7 @@ public class PrologArchitecture implements Architecture {
     }
 
     // a query calls this
-    protected Object synchronizedCall(Supplier<Object> task) {
+    public Object synchronizedCall(Supplier<Object> task) {
         synchronizedSupplier = task;
         synchronizedFutureTask = new FutureTask<Object>(() -> {
             Object result = synchronizedResult;
@@ -156,7 +156,7 @@ public class PrologArchitecture implements Architecture {
     }
 
     // a query calls this
-    protected void waitingCall(int ticks) {
+    public void waitingCall(int ticks) {
         synchronizedFutureTask = new FutureTask<Object>(() -> "");
 
         // let the architecture know the query is waiting

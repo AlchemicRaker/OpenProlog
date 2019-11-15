@@ -2,6 +2,8 @@ package com.syntheticentropy.ocpro;
 
 import com.ugos.jiprolog.engine.JIPDebugger;
 import com.ugos.jiprolog.engine.JIPEngine;
+import com.ugos.jiprolog.engine.JIPQuery;
+import com.ugos.jiprolog.engine.JIPTerm;
 
 import java.io.InputStream;
 
@@ -16,6 +18,12 @@ public class PrologVM extends Thread {
         if (state == State.Created) {
             init();
             // run main query now
+            JIPTerm queryTerm = null;
+            queryTerm = jip.getTermParser().parseTerm("main.");
+            JIPQuery jipQuery = jip.openSynchronousQuery(queryTerm);
+            if (jipQuery.hasMoreChoicePoints()) {
+                queryTerm = jipQuery.nextSolution();
+            }
         } else {
             // run main query
         }
@@ -36,7 +44,7 @@ public class PrologVM extends Thread {
             return false;
 
         JIPDebugger.debug = true; // force it to load .pl files instead of compiled files
-        jip = new JIPEngine();
+        jip = new JIPEngine(owner);
 
         // Inject java-backed APIs
         owner.apis.forEach(PrologAPI::initialize);

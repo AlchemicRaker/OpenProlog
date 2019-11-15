@@ -21,6 +21,7 @@
 
 package com.ugos.jiprolog.engine;
 
+import com.syntheticentropy.ocpro.PrologArchitecture;
 import com.ugos.util.ClassLoaderEx;
 import com.ugos.util.JARClassProvider;
 
@@ -75,6 +76,7 @@ public class JIPEngine implements Serializable {
 
     private String m_strSearchPath;
     private GlobalDB m_globalDB;
+    private PrologArchitecture owner;
 
     private static JIPEngine defaultEngine;
 
@@ -117,7 +119,8 @@ public class JIPEngine implements Serializable {
      * Input and Output stream are the streams where this instance of JIPEngine reads and writes.
      * The default values are respectively System.in and System.out.<br>
      */
-    public JIPEngine() {
+    public JIPEngine(PrologArchitecture owner) {
+        this.owner = owner;
         if (defaultEngine == null) {
             defaultEngine = this;
             s_globalDB = new GlobalDB(this);
@@ -1215,5 +1218,9 @@ public class JIPEngine implements Serializable {
 
     static final synchronized ClassLoader getClassLoader() {
         return s_classLoader;
+    }
+
+    public PrologArchitecture getOwner() {
+        return owner;
     }
 }
