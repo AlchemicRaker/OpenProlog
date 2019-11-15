@@ -21,7 +21,7 @@ public class OpenProlog
     // resource path
     static final String RESOURCE_PATH = "/com/syntheticentropy/ocpro/";
 
-    private static Logger logger;
+    protected static Logger logger;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
