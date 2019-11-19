@@ -1,6 +1,8 @@
 package com.syntheticentropy.ocpro.builtin;
 
 import com.ugos.jiprolog.engine.*;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.network.Node;
 
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -37,18 +39,34 @@ public class ComponentInvoke4 extends OcproBuiltIn {
 
 
         // TODO: if it is a direct call, no need to send it through synchronizedCall()
-        List<PrologObject> resultList = Arrays.asList(
-                this.m_jipEngine.getOwner().synchronizedCall(() -> {
-                    try {
-                        return this.m_jipEngine.getOwner().machine.invoke(address, method, params.toArray());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return new Object[0];
-                })
-        ).stream()
-                .map(this::rawToPrologObject)
-                .collect(Collectors.toList());
+        Node node = getJIPEngine().getOwner().machine.node().network().node(address);
+        Callback callback = getJIPEngine().getOwner().machine.methods(node.host()).get(method);
+
+        List<PrologObject> resultList = null;
+
+        if (callback.direct()) {
+            try {
+                resultList = Arrays.asList(getJIPEngine().getOwner().machine
+                        .invoke(address, method, params.toArray())).stream()
+                        .map(this::rawToPrologObject)
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            resultList = Arrays.asList(
+                    this.m_jipEngine.getOwner().synchronizedCall(() -> {
+                        try {
+                            return this.getJIPEngine().getOwner().machine.invoke(address, method, params.toArray());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return new Object[0];
+                    })
+            ).stream()
+                    .map(this::rawToPrologObject)
+                    .collect(Collectors.toList());
+        }
 
         ConsList results = ConsList.create(resultList);
 

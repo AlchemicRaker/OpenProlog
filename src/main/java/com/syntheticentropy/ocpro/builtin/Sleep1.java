@@ -1,6 +1,7 @@
 package com.syntheticentropy.ocpro.builtin;
 
 import com.ugos.jiprolog.engine.Expression;
+import com.ugos.jiprolog.engine.JIPTypeException;
 import com.ugos.jiprolog.engine.PrologObject;
 import com.ugos.jiprolog.engine.Variable;
 
@@ -10,12 +11,15 @@ public class Sleep1 extends OcproBuiltIn {
 
     @Override
     public boolean unify(Hashtable<Variable, Variable> m_varsTbl) {
-        PrologObject time = null;
+        final PrologObject timeoutTerm = getRealTerm(getParam(1));
 
-        time = getParam(1);
-        PrologObject test = getRealTerm(time);
+        if (!(timeoutTerm instanceof Expression) || !((Expression) timeoutTerm).isInteger())
+            throw new JIPTypeException(JIPTypeException.INTEGER, timeoutTerm);
 
-        this.m_jipEngine.getOwner().waitingCall((int) ((Expression) test).getValue());
+        final Integer timeout = (int) ((Expression) timeoutTerm).getValue();
+
+        // TODO: guarantee the sleep time. currently can be interrupted by signal events
+        this.m_jipEngine.getOwner().waitingCall(timeout);
 
         return true;
     }

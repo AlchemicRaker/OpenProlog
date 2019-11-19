@@ -31,6 +31,10 @@ public abstract class OcproBuiltIn extends BuiltIn {
     public Object prologObjectToRaw(PrologObject prologObjectIndirect) {
         PrologObject prologObject = prologObjectIndirect instanceof Variable ?
                 ((Variable) prologObjectIndirect).getObject() : prologObjectIndirect;
+
+        if (prologObject == null) // Variable that is bound to nothing
+            return null;
+
         if (prologObject instanceof Expression) {
             if (((Expression) prologObject).isInteger())
                 return Math.floor(((Expression) prologObject).getValue());

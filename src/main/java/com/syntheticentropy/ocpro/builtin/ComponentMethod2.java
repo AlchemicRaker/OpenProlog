@@ -3,6 +3,7 @@ package com.syntheticentropy.ocpro.builtin;
 import com.ugos.jiprolog.engine.Atom;
 import com.ugos.jiprolog.engine.PrologObject;
 import com.ugos.jiprolog.engine.Variable;
+import li.cil.oc.api.machine.Machine;
 import li.cil.oc.api.network.Node;
 import net.minecraft.util.Tuple;
 
@@ -25,13 +26,14 @@ public class ComponentMethod2 extends OcproBuiltIn {
         // component_method(Address, Method)
 
         if (resultIterator == null) {
-            Map<String, String> components = this.m_jipEngine.getOwner().machine.components();
+            Machine machine = getJIPEngine().getOwner().machine;
+            Map<String, String> components = machine.components();
             List<Tuple<String, String>> results = components.entrySet().stream()
                     .map(Map.Entry::getKey)
                     .flatMap(address -> {
-                        Node node = this.m_jipEngine.getOwner().machine.node().network().node(address);
+                        Node node = machine.node().network().node(address);
                         if (node == null) return Stream.empty();
-                        List<String> methods = this.m_jipEngine.getOwner().machine.methods(node.host())
+                        List<String> methods = machine.methods(node.host())
                                 .entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
                         return methods.stream().map(method -> new Tuple<>(address, method));
                     })
@@ -52,7 +54,7 @@ public class ComponentMethod2 extends OcproBuiltIn {
 
             if (attempt) {
                 // One result from this function = one call
-                m_jipEngine.getOwner().synchronizedCall(() -> null);
+                getJIPEngine().getOwner().synchronizedCall(() -> null);
 
                 return (addressAtom == null || addressAtom.unify(addressParam, varsTbl)) &&
                         (methodAtom == null || methodAtom.unify(methodParam, varsTbl));
@@ -60,7 +62,7 @@ public class ComponentMethod2 extends OcproBuiltIn {
         }
 
         // One result from this function = one call
-        m_jipEngine.getOwner().synchronizedCall(() -> null);
+        getJIPEngine().getOwner().synchronizedCall(() -> null);
         return false;
     }
 
