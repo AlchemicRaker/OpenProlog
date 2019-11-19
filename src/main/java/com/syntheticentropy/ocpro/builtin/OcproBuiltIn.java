@@ -21,6 +21,9 @@ public abstract class OcproBuiltIn extends BuiltIn {
         if (raw instanceof Double) {
             return Expression.createNumber((Double) raw);
         }
+        if (raw instanceof byte[]) {
+            return Atom.createAtom(new String((byte[]) raw));
+        }
         // TODO: add maps and lists support
         return Atom.createAtom(raw.toString());
     }

@@ -358,7 +358,7 @@ class WAMTrace extends WAM {
 
     // run a query
     @Override
-    final boolean query(final PrologObject query)//, final SolutionConsumer consumer)
+    public final boolean query(final PrologObject query)//, final SolutionConsumer consumer)
             throws JIPIsRunningException {
         m_bNotifyRedo = true;
 

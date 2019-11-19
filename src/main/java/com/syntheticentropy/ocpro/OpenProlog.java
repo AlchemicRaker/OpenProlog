@@ -7,6 +7,10 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
+import java.io.InputStream;
+
+import static li.cil.oc.api.Items.registerEEPROM;
+
 @Mod(modid = OpenProlog.MODID, name = OpenProlog.NAME,
         version = OpenProlog.VERSION, dependencies = "required-after:opencomputers@[1.7.4,)")
 public class OpenProlog
@@ -28,6 +32,19 @@ public class OpenProlog
     {
         logger = event.getModLog();
         Machine.add(PrologArchitecture.class);
+
+        try {
+            InputStream bios = this.getClass().getResourceAsStream(OpenProlog.RESOURCE_PATH + "bios.pl");
+            byte[] code = new byte[4 * 1024];
+            int count = this.getClass().getResourceAsStream(OpenProlog.RESOURCE_PATH + "bios.pl").read(code);
+            byte[] code2 = new byte[count];
+            for (int i = 0; i < count; i++) {
+                code2[i] = code[i];
+            }
+            registerEEPROM("EEPROM (Prolog BIOS)", code2, null, false);
+        } catch (Exception e) {
+            logger.error("Unable to load prolog bios, no eeprom will be created");
+        }
     }
 
     @EventHandler

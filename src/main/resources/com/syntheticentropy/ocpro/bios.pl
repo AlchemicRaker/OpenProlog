@@ -1,0 +1,18 @@
+biosMain :-
+    repeat,
+        sleep(60),
+        component_type(gpu, Gpu),
+        component_type(screen, Screen),
+        component_invoke(Screen, turnOn, [], _),
+        component_invoke(Gpu, bind, [Screen], _),
+        component_invoke(Gpu, maxResolution, [], [MaxWidth, MaxHeight]),
+        component_invoke(Gpu, setResolution, [MaxWidth, MaxHeight], _),
+        component_invoke(Gpu, fill, [1, 1, MaxWidth, MaxHeight,' '], _),
+        component_invoke(Gpu, set, [1, 1, 'x'], _),
+        component_invoke(Gpu, set, [MaxWidth, MaxHeight, 'x'], _),
+        HWX is (MaxWidth/2)-6, HWY is MaxHeight/2,
+        component_invoke(Gpu, set, [HWX, HWY, 'Hello World!'], _),
+        between(1, MaxWidth, X),
+            component_invoke(Gpu, set, [X, 1, '-'], _),
+            component_invoke(Gpu, set, [X, MaxHeight, '-'], _),
+        fail.

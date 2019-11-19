@@ -112,7 +112,7 @@ public class PrologArchitecture implements Architecture {
             vmQueryResponseFutureTask.get(30, TimeUnit.SECONDS);
 //            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-//            return new ExecutionResult.Error("Some problem eh?");
+            return new ExecutionResult.Error("Some problem eh?");
         }
 
         // a query has sent us something (or the thread exited)

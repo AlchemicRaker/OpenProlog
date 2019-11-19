@@ -20,10 +20,7 @@
 
 package com.ugos.jiprolog.engine;
 
-import com.syntheticentropy.ocpro.builtin.ComponentInvoke4;
-import com.syntheticentropy.ocpro.builtin.ComponentMethod2;
-import com.syntheticentropy.ocpro.builtin.ComponentType2;
-import com.syntheticentropy.ocpro.builtin.Sleep1;
+import com.syntheticentropy.ocpro.builtin.*;
 
 import java.util.Hashtable;
 
@@ -155,6 +152,7 @@ final class BuiltInFactory extends Object {
         m_builtInTable.put("component_invoke/4", new ComponentInvoke4());
         m_builtInTable.put("component_type/2", new ComponentType2());
         m_builtInTable.put("component_method/2", new ComponentMethod2());
+        m_builtInTable.put("consult/2", new Consult2());
 
 //        catch((X = 1, throw(gulp)), E, (write(ok-X), nl)).
         //m_BuiltInTable.put("wait/1",            new Wait1());

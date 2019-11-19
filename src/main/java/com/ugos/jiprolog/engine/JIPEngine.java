@@ -164,7 +164,8 @@ public class JIPEngine implements Serializable {
         setEnvVariable("syntax_error", "error");
         setEnvVariable("os_error", "error");
         setEnvVariable("debug", JIPDebugger.debug ? "on" : "off");
-        setEnvVariable("update_semantics", "logical");
+//        setEnvVariable("update_semantics", "logical");
+        setEnvVariable("update_semantics", "immediate");
 
         setEnvVariable("enable_clause_check", "false");
 
@@ -1142,7 +1143,7 @@ public class JIPEngine implements Serializable {
         return m_builtInFactory;
     }
 
-    final GlobalDB getGlobalDB() {
+    public final GlobalDB getGlobalDB() {
         return m_globalDB;
     }
 
@@ -1150,11 +1151,11 @@ public class JIPEngine implements Serializable {
         return m_eventNotifier;
     }
 
-    final OperatorManager getOperatorManager() {
+    public final OperatorManager getOperatorManager() {
         return m_opManager;
     }
 
-    final void notifyEvent(final int nID, final PrologObject solution, final int nQueryHandle) {
+    public final void notifyEvent(final int nID, final PrologObject solution, final int nQueryHandle) {
         m_eventNotifier.notifyEvent(nID, solution, nQueryHandle);
     }
 

@@ -36,7 +36,7 @@ public class JIPPermissionException extends JIPRuntimeException {
     private String permission;
     private PrologObject culprit;
 
-    JIPPermissionException(String operation, String permission, PrologObject culprit, JIPEngine engine) {
+    public JIPPermissionException(String operation, String permission, PrologObject culprit, JIPEngine engine) {
         this(operation, permission, culprit);
         m_engine = engine;
     }
@@ -46,7 +46,7 @@ public class JIPPermissionException extends JIPRuntimeException {
         m_engine = engine;
     }
 
-    JIPPermissionException(String operation, String permission, PrologObject culprit) {
+    public JIPPermissionException(String operation, String permission, PrologObject culprit) {
         this.operation = operation;
         this.permission = permission;
         this.culprit = culprit;

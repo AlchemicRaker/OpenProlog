@@ -36,9 +36,9 @@ import java.util.Hashtable;
 public class JIPRuntimeException extends RuntimeException {
     private static final long serialVersionUID = 3046239634882549653L;
 
-    protected JIPEngine m_engine;
+    public JIPEngine m_engine;
     protected WAM.Node m_curNode;
-    protected String m_strFileName;
+    public String m_strFileName;
     protected PrologObject m_term;
 
     protected int m_nLineNumber;

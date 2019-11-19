@@ -24,7 +24,7 @@ package com.ugos.jiprolog.engine;
 
 import java.util.Hashtable;
 
-final class PString extends ConsList //implements Serializable
+public final class PString extends ConsList //implements Serializable
 {
     final static long serialVersionUID = 300000007L;
 

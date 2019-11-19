@@ -34,18 +34,18 @@ public final class Atom extends PrologObject //implements Serializable
 
     static final Hashtable<String, Atom> s_atomTable = new Hashtable<String, Atom>(101);
 
-    final static Atom COMMA = Atom.createAtom(",/2");
-    final static Atom SEMICOLON = Atom.createAtom(";/2");
-    final static Atom IF = Atom.createAtom("->/2");
-    final static Atom DCG = Atom.createAtom("-->/2");
-    final static Atom STARIF = Atom.createAtom("*->/2");
-    final static Atom COLON = Atom.createAtom(":/2");
-    final static Atom COLONDASH = Atom.createAtom(":-/2");
-    final static Atom TRUE = Atom.createAtom("true");
-    final static Atom KERNEL = Atom.createAtom(GlobalDB.KERNEL_MODULE);
-    final static Atom SLASHSLASH = Atom.createAtom("//2");
-    final static Atom SLASH = Atom.createAtom("/2");
-    final static Atom NIL = Atom.createAtom("[]");
+    public final static Atom COMMA = Atom.createAtom(",/2");
+    public final static Atom SEMICOLON = Atom.createAtom(";/2");
+    public final static Atom IF = Atom.createAtom("->/2");
+    public final static Atom DCG = Atom.createAtom("-->/2");
+    public final static Atom STARIF = Atom.createAtom("*->/2");
+    public final static Atom COLON = Atom.createAtom(":/2");
+    public final static Atom COLONDASH = Atom.createAtom(":-/2");
+    public final static Atom TRUE = Atom.createAtom("true");
+    public final static Atom KERNEL = Atom.createAtom(GlobalDB.KERNEL_MODULE);
+    public final static Atom SLASHSLASH = Atom.createAtom("//2");
+    public final static Atom SLASH = Atom.createAtom("/2");
+    public final static Atom NIL = Atom.createAtom("[]");
 
     private String m_strAtom;
     private int m_nHashValue;

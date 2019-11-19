@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Stack;
 
-final class PrologParser {
+public final class PrologParser {
     private static final int STATE_NONE = 0;
     private static final int STATE_ROUND_BRACKET = 1;
     private static final int STATE_SQUARE_BRACKET = 2;
@@ -148,7 +148,7 @@ final class PrologParser {
 //        }
 //    }
 
-    PrologParser(final ParserReader reader, final OperatorManager opManager, final JIPEngine engine, final String strFileName) {
+    public PrologParser(final ParserReader reader, final OperatorManager opManager, final JIPEngine engine, final String strFileName) {
         m_lnReader = reader;//new LineNumberReader(reader);
         m_tokenizer = new PrologTokenizer(m_lnReader, strFileName);
         m_opManager = opManager;
@@ -156,7 +156,7 @@ final class PrologParser {
         m_strFileName = strFileName;
     }
 
-    PrologObject parseNext() throws JIPSyntaxErrorException {
+    public PrologObject parseNext() throws JIPSyntaxErrorException {
 //      System.out.println("parseNext");
         m_varTable.clear();
         m_singVarTable.clear();
@@ -164,7 +164,7 @@ final class PrologParser {
         return translateTerm(STATE_NONE, m_lnReader);
     }
 
-    Hashtable<String, Variable> getSingletonVariables() {
+    public Hashtable<String, Variable> getSingletonVariables() {
         return m_singVarTable;
     }
 

@@ -26,7 +26,7 @@ import java.util.Hashtable;
 import java.util.Stack;
 import java.util.Vector;
 
-class WAM {
+public class WAM {
     // global db
     GlobalDB m_globalDB;
 
@@ -87,14 +87,14 @@ class WAM {
 //        public String toString() {return m_callList.toString();}
     }
 
-    WAM(final JIPEngine jipEngine) {
+    public WAM(final JIPEngine jipEngine) {
         m_globalDB = jipEngine.getGlobalDB();
         m_engine = jipEngine;
         m_strBaseModule = GlobalDB.USER_MODULE;
         m_nBaseCounter = 0;
     }
 
-    WAM(final WAM wam) {
+    public WAM(final WAM wam) {
         m_globalDB = wam.m_globalDB;
         m_engine = wam.m_engine;
         m_nBaseCounter = wam.m_nBaseCounter;
@@ -125,7 +125,7 @@ class WAM {
     }
 
     // run a query
-    boolean query(PrologObject query) throws JIPIsRunningException {
+    public boolean query(PrologObject query) throws JIPIsRunningException {
         if (isRunning() || isWaiting())  // da testare l'inseriento di isWaiting
             throw new JIPIsRunningException();
 
@@ -167,7 +167,7 @@ class WAM {
         return run(curNode);
     }
 
-    final void closeQuery() {
+    public final void closeQuery() {
         // aggiungere thread di rilascio delle risorse
         // nel thread verrebbe chiamata backtrack fino al termine
 

@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.*;
 
-final class GlobalDB extends Object// implements Cloneable //Serializable
+public final class GlobalDB extends Object// implements Cloneable //Serializable
 {
     private static final String[] INTERNAL_MODULES = {"jipxlist", "jipsys", "jipxdb", "jipxexception", "jipxio", "jipxreflect", "jipxsets", "jipxsystem", "jipxterms", "jipxxml"};
 
@@ -44,9 +44,9 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
     private static final String KERNEL_DEBUG = JIPEngine.RESOURCEPATH + "jipkernel.txt";
     private static final String KERNEL_RELEASE = JIPEngine.RESOURCEPATH + "jipkernel.jip";
 
-    static final String SYSTEM_MODULE = "$system";
-    static final String USER_MODULE = "$user";
-    static final String KERNEL_MODULE = "$kernel";
+    public static final String SYSTEM_MODULE = "$system";
+    public static final String USER_MODULE = "$user";
+    public static final String KERNEL_MODULE = "$kernel";
 
     public static final StringBuilderEx sbUSER_MODULE_AUX = new StringBuilderEx(USER_MODULE).append(":").setInitial();
     public static final StringBuilderEx sbUSER_MODULE = new StringBuilderEx(USER_MODULE).append(":").setInitial();
@@ -294,19 +294,19 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
             return null;
     }
 
-    final void assertz(final Clause clause, String strFile, boolean dynamic) {
+    public final void assertz(final Clause clause, String strFile, boolean dynamic) {
         addClause((Clause) fixTerm(clause.copy(true)), false, strFile, dynamic);
     }
 
-    final void asserta(final Clause clause, String strFile, boolean dynamic) {
+    public final void asserta(final Clause clause, String strFile, boolean dynamic) {
         addClause((Clause) fixTerm(clause.copy(true)), true, strFile, dynamic);
     }
 
-    final void assertzNoCopy(final Clause clause, String strFile, boolean dynamic) {
+    public final void assertzNoCopy(final Clause clause, String strFile, boolean dynamic) {
         addClause(clause, false, strFile, dynamic);
     }
 
-    final Clause retract(Clause clause) {
+    public final Clause retract(Clause clause) {
 //      System.out.println("retract");
 
         Functor functor = (Functor) clause.getHead();
@@ -358,7 +358,7 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
         }
     }
 
-    final void abolish(PrologObject pred) {
+    public final void abolish(PrologObject pred) {
         if (pred instanceof Variable)
             pred = ((Variable) pred).getObject();
 
@@ -751,7 +751,7 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
         return term;
     }
 
-    final void unconsult(final String strFileName) {
+    public final void unconsult(final String strFileName) {
         Vector<String> predVector = m_file2PredMap.get(strFileName);
         if (predVector == null)
             return;
@@ -818,7 +818,7 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
 //        }
     }
 
-    final ArrayList<String> getFiles() {
+    public final ArrayList<String> getFiles() {
         ArrayList<String> files = new ArrayList<String>();
 
         Enumeration<String> en = m_pred2FileMap.keys();
@@ -831,12 +831,12 @@ final class GlobalDB extends Object// implements Cloneable //Serializable
         return files;
     }
 
-    void setExported(String functor) {
+    public void setExported(String functor) {
 //    	String func = functor.getName();
         m_exportedTable.put(functor, functor);
     }
 
-    boolean isExported(Functor functor) {
+    public boolean isExported(Functor functor) {
         String func = functor.getName();
         return m_exportedTable.containsKey(func);
     }

@@ -63,7 +63,7 @@ public abstract class BuiltIn extends Object {
         return m_params.getTerm(n);
     }
 
-    final JIPEngine getJIPEngine() {
+    public final JIPEngine getJIPEngine() {
         return m_jipEngine;
     }
 

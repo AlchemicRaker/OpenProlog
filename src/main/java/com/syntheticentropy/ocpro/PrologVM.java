@@ -19,7 +19,7 @@ public class PrologVM extends Thread {
             init();
             // run main query now
             JIPTerm queryTerm = null;
-            queryTerm = jip.getTermParser().parseTerm("main.");
+            queryTerm = jip.getTermParser().parseTerm("machineMain."); //should load the bios
             JIPQuery jipQuery = jip.openSynchronousQuery(queryTerm);
             if (jipQuery.hasMoreChoicePoints()) {
                 queryTerm = jipQuery.nextSolution();

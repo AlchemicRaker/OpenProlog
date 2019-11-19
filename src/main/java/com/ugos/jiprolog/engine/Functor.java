@@ -25,7 +25,7 @@ import com.ugos.jiprolog.engine.WAM.Node;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-class Functor extends ConsCell {
+public class Functor extends ConsCell {
     final static long serialVersionUID = 300000005L;
 
     private String m_strName;

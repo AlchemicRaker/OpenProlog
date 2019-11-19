@@ -25,7 +25,7 @@ import com.ugos.io.PushbackLineNumberInputStream;
 import java.io.ByteArrayInputStream;
 import java.util.Hashtable;
 
-class Clause extends ConsCell {
+public class Clause extends ConsCell {
     final static long serialVersionUID = 300000002L;
 
     private String m_strModuleName;
@@ -40,28 +40,28 @@ class Clause extends ConsCell {
     private static Functor s_translateQuery = null;
     private static ConsCell s_translateParams = null;
 
-    Clause(String strModuleName, final Functor lhs, final ConsCell rhs) {
+    public Clause(String strModuleName, final Functor lhs, final ConsCell rhs) {
         super(lhs, rhs);
         m_strModuleName = strModuleName;
     }
 
-    private Clause(final ConsCell cell, String strModuleName) {
+    public Clause(final ConsCell cell, String strModuleName) {
         this(strModuleName, (Functor) cell.m_head, (ConsCell) cell.m_tail);
     }
 
-    final void setModuleName(final String strModuleName) {
+    public final void setModuleName(final String strModuleName) {
         m_strModuleName = strModuleName;
     }
 
-    final String getModuleName() {
+    public final String getModuleName() {
         return m_strModuleName;
     }
 
-    final void setExported() {
+    public final void setExported() {
         m_bExported = true;
     }
 
-    final void setFileName(String strFileName) {
+    public final void setFileName(String strFileName) {
         m_strFileName = strFileName;
     }
 
@@ -104,11 +104,11 @@ class Clause extends ConsCell {
         return clause;
     }
 
-    static final Clause getClause(PrologObject pred, boolean enableClauseChecks) {
+    public static final Clause getClause(PrologObject pred, boolean enableClauseChecks) {
         return getClause(pred, GlobalDB.USER_MODULE, enableClauseChecks);
     }
 
-    static final Clause getClause(PrologObject pred, String strModuleName, boolean enableClauseChecks) {
+    public static final Clause getClause(PrologObject pred, String strModuleName, boolean enableClauseChecks) {
         if (pred instanceof Variable)
             pred = ((Variable) pred).getObject();
 
