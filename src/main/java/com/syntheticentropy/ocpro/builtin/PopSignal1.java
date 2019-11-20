@@ -37,7 +37,7 @@ public class PopSignal1 extends OcproBuiltIn {
 
         List<PrologObject> argsList = Arrays.asList(signal.args()).stream().map(this::rawToPrologObject).collect(Collectors.toList());
 
-        Functor functor = new Functor(signal.name(), ConsList.create(argsList));
+        Functor functor = new Functor(signal.name() + "/" + argsList.size(), ConsList.create(argsList).getConsCell());
 
         return functor.unify(signalParam, varsTbl);
     }

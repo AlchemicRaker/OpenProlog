@@ -12,8 +12,7 @@ public abstract class OcproBuiltIn extends BuiltIn {
             return Atom.createAtom(((Boolean) raw) ? "true" : "false");
         }
         if (raw instanceof String) {
-            // TODO: strings should probably be turned into ConsCell/ConsList?
-            return Atom.createAtom((String) raw);
+            return new Functor(Atom.createAtom("string/1"), new PString((String) raw, true).getConsCell());
         }
         if (raw instanceof Integer) {
             return Expression.createNumber((Integer) raw);
@@ -49,6 +48,12 @@ public abstract class OcproBuiltIn extends BuiltIn {
                 return Boolean.FALSE;
             else
                 return str;
+        }
+        if (prologObject instanceof Functor) {
+            Functor functor = (Functor) prologObject;
+            if (functor.getFriendlyName().equalsIgnoreCase("string")) {
+                return new PString(PString.create(((ConsCell) functor.getTerm(2).getRealTerm()).getTerms()), true).getString();
+            }
         }
         if (prologObject instanceof ConsCell) {
             return ((ConsCell) prologObject).getTerms().stream()

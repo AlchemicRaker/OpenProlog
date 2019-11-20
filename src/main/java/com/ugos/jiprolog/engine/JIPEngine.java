@@ -158,7 +158,7 @@ public class JIPEngine implements Serializable {
         setEncoding(Charset.defaultCharset().name());
 
         setEnvVariable("char_conversion", "off");
-        setEnvVariable("double_quotes", "codes");
+        setEnvVariable("double_quotes", "chars");
         setEnvVariable("back_quotes", "atom");
         setEnvVariable("unknown", "warning");
         setEnvVariable("syntax_error", "error");

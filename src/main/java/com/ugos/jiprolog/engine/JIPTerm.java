@@ -219,7 +219,7 @@ public class JIPTerm extends Object implements Clearable, Serializable, Cloneabl
         return varsTbl;
     }
 
-    JIPTerm(final PrologObject obj) {
+    public JIPTerm(final PrologObject obj) {
         m_obj = obj;
     }
 
@@ -247,7 +247,7 @@ public class JIPTerm extends Object implements Clearable, Serializable, Cloneabl
         }
     }
 
-    final PrologObject getRealTerm() {
+    public final PrologObject getRealTerm() {
         if (m_obj instanceof Variable) {
             if (((Variable) m_obj).isBounded())
                 return ((Variable) m_obj).getObject();
@@ -256,7 +256,7 @@ public class JIPTerm extends Object implements Clearable, Serializable, Cloneabl
         return m_obj;
     }
 
-    final PrologObject getTerm() {
+    public final PrologObject getTerm() {
         return m_obj;
     }
 
