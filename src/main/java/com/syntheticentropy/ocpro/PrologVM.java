@@ -12,20 +12,27 @@ public class PrologVM extends Thread {
     JIPEngine jip;
     PrologArchitecture owner;
     State state = State.Created;
+    Exception exitException;
 
     @Override
     public void run() {
-        if (state == State.Created) {
-            init();
-            // run main query now
-            JIPTerm queryTerm = null;
-            queryTerm = jip.getTermParser().parseTerm("machineMain."); //should load the bios
-            JIPQuery jipQuery = jip.openSynchronousQuery(queryTerm);
-            if (jipQuery.hasMoreChoicePoints()) {
-                queryTerm = jipQuery.nextSolution();
+        try {
+            if (state == State.Created) {
+                init();
+                // run main query now
+                JIPTerm queryTerm = null;
+                queryTerm = jip.getTermParser().parseTerm("machineMain."); //should load the bios
+                JIPQuery jipQuery = jip.openSynchronousQuery(queryTerm);
+                if (jipQuery.hasMoreChoicePoints()) {
+                    queryTerm = jipQuery.nextSolution();
+                }
+                // TODO: in signal query mode, wait for and run signal queries until shutdown is requested
+            } else {
+                // run main query
             }
-        } else {
-            // run main query
+        } catch (Exception e) {
+            exitException = e;
+            owner.machine.crash(e.getMessage());
         }
     }
 

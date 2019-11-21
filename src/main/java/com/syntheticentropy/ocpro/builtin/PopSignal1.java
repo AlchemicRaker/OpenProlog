@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class PopSignal1 extends OcproBuiltIn {
 
+    boolean hasMoreChoices = true;
+
     @Override
     public boolean unify(Hashtable<Variable, Variable> varsTbl) {
         final PrologObject signalParam = getParam(1);
@@ -30,8 +32,10 @@ public class PopSignal1 extends OcproBuiltIn {
             return new Signal[0];
         });
 
-        if (signals.length == 0 || signals[0] == null)
+        if (signals.length == 0 || signals[0] == null) {
+            hasMoreChoices = false;
             return false;
+        }
 
         Signal signal = signals[0];
 
@@ -39,6 +43,12 @@ public class PopSignal1 extends OcproBuiltIn {
 
         Functor functor = new Functor(signal.name() + "/" + argsList.size(), ConsList.create(argsList).getConsCell());
 
-        return functor.unify(signalParam, varsTbl);
+        hasMoreChoices = functor.unify(signalParam, varsTbl);
+        return hasMoreChoices;
+    }
+
+    @Override
+    public boolean hasMoreChoicePoints() {
+        return hasMoreChoices;
     }
 }

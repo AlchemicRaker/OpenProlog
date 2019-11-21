@@ -86,6 +86,8 @@ public class JIPQuery extends Object implements Serializable {
             throw ex;
         } catch (JIPRuntimeException ex) {
             throw ex;
+        } catch (Exception ex) {
+            throw ex;
         }
 
         // try/catch occorre per intercettare StackOverflow sulla copy

@@ -23,9 +23,11 @@ public class Consult2 extends BuiltIn {
                 content = ((Atom) contentTerm).getName();
             else if (contentTerm instanceof PString)
                 content = ((PString) contentTerm).getString();
+            else if (contentTerm instanceof ConsCell)
+                content = new PString(new ConsList((ConsCell) contentTerm), true).getString();
         }
         if (content == null)
-            throw new JIPTypeException(JIPTypeException.ATOM_OR_STRING, contentTerm);
+            throw new JIPTypeException(JIPTypeException.LIST, contentTerm);
 
         if (streamNameTerm != null) {
             if (streamNameTerm instanceof Atom)

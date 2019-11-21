@@ -1,6 +1,7 @@
 package com.syntheticentropy.ocpro.builtin;
 
 import com.ugos.jiprolog.engine.*;
+import li.cil.oc.server.component.HandleValue;
 
 import java.util.stream.Collectors;
 
@@ -21,7 +22,13 @@ public abstract class OcproBuiltIn extends BuiltIn {
             return Expression.createNumber((Double) raw);
         }
         if (raw instanceof byte[]) {
-            return Atom.createAtom(new String((byte[]) raw));
+            return new Functor(Atom.createAtom("bytes/1"), new PString(new String((byte[]) raw), true).getConsCell());
+        }
+        if (raw instanceof HandleValue) {
+            return Expression.createNumber(((HandleValue) raw).handle());
+        }
+        if (raw == null) {
+            return Atom.createAtom("null");
         }
         // TODO: add maps and lists support
         return Atom.createAtom(raw.toString());
@@ -52,7 +59,12 @@ public abstract class OcproBuiltIn extends BuiltIn {
         if (prologObject instanceof Functor) {
             Functor functor = (Functor) prologObject;
             if (functor.getFriendlyName().equalsIgnoreCase("string")) {
-                return new PString(PString.create(((ConsCell) functor.getTerm(2).getRealTerm()).getTerms()), true).getString();
+                return new PString(PString.create(((ConsCell) functor.getTerm(2).getRealTerm()).getTerms()), true)
+                        .getString();
+            }
+            if (functor.getFriendlyName().equalsIgnoreCase("bytes")) {
+                return new PString(PString.create(((ConsCell) functor.getTerm(2).getRealTerm()).getTerms()), true)
+                        .getString().getBytes();
             }
         }
         if (prologObject instanceof ConsCell) {

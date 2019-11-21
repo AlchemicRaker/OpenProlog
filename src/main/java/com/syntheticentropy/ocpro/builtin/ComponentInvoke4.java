@@ -2,9 +2,11 @@ package com.syntheticentropy.ocpro.builtin;
 
 import com.ugos.jiprolog.engine.*;
 import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.LimitReachedException;
 import li.cil.oc.api.network.Node;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,32 +46,47 @@ public class ComponentInvoke4 extends OcproBuiltIn {
 
         List<PrologObject> resultList = null;
 
+        boolean tryAgain = false;
+
         if (callback.direct()) {
             try {
-                resultList = Arrays.asList(getJIPEngine().getOwner().machine
-                        .invoke(address, method, params.toArray())).stream()
-                        .map(this::rawToPrologObject)
-                        .collect(Collectors.toList());
+                Object[] resultArray = getJIPEngine().getOwner().machine
+                        .invoke(address, method, params.toArray());
+                if (resultArray == null || resultArray.length == 0) {
+                    resultList = Collections.emptyList();
+                } else {
+                    resultList = Arrays.asList(resultArray).stream()
+                            .map(this::rawToPrologObject)
+                            .collect(Collectors.toList());
+                }
+            } catch (LimitReachedException e) {
+                tryAgain = true; //try again in one tick
+                this.m_jipEngine.getOwner().waitingCall(1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-            resultList = Arrays.asList(
-                    this.m_jipEngine.getOwner().synchronizedCall(() -> {
-                        try {
-                            return this.getJIPEngine().getOwner().machine.invoke(address, method, params.toArray());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return new Object[0];
-                    })
-            ).stream()
-                    .map(this::rawToPrologObject)
-                    .collect(Collectors.toList());
+        }
+        if (!callback.direct() || tryAgain) {
+            Object[] resultArray = this.m_jipEngine.getOwner().synchronizedCall(() -> {
+                try {
+                    return this.getJIPEngine().getOwner().machine.invoke(address, method, params.toArray());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return new Object[0];
+            });
+            if (resultArray == null || resultArray.length == 0) {
+                resultList = Collections.emptyList();
+            } else {
+                resultList = Arrays.asList(resultArray).stream()
+                        .map(this::rawToPrologObject)
+                        .collect(Collectors.toList());
+            }
         }
 
         ConsList results = ConsList.create(resultList);
 
         return results.unify(outputParam, varsTbl);
     }
+
 }

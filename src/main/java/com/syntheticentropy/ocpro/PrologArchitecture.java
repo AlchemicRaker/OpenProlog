@@ -112,6 +112,9 @@ public class PrologArchitecture implements Architecture {
             vmQueryResponseFutureTask.get(30, TimeUnit.SECONDS);
 //            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            if (vm.exitException != null) {
+                return new ExecutionResult.Error(vm.exitException.getMessage());
+            }
             return new ExecutionResult.Error("Some problem eh?");
         }
 
@@ -131,6 +134,9 @@ public class PrologArchitecture implements Architecture {
             return new ExecutionResult.SynchronizedCall();
         }
 
+        if (vm.exitException != null) {
+            return new ExecutionResult.Error(vm.exitException.getMessage());
+        }
         return new ExecutionResult.Error("Some problem eh?");
     }
 
