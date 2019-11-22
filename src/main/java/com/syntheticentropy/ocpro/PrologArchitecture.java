@@ -29,6 +29,8 @@ public class PrologArchitecture implements Architecture {
     private FutureTask<Object> vmQueryResponseFutureTask;
     private int vmQuerySleepTicks;
 
+    private ExecutionResult forceExecutionResult;
+
     enum VMResponse {
         RunSynchronous,
         Wait,
@@ -65,6 +67,9 @@ public class PrologArchitecture implements Architecture {
 
     @Override
     public ExecutionResult runThreaded(boolean isSynchronizedReturn) {
+        if (forceExecutionResult != null)
+            return forceExecutionResult;
+
         //Called for: synchronized return, init, or signal
         vmQueryResponse = VMResponse.None;
         vmQueryResponseFutureTask = new FutureTask<>(() -> "");
@@ -109,13 +114,19 @@ public class PrologArchitecture implements Architecture {
         }
         // (magical time where prolog engine resolves part of the query)
         try {
+            if (vm.exitException != null) {
+                return new ExecutionResult.Error(vm.exitException.getMessage());
+            }
+            if (vm.getState() == Thread.State.TERMINATED) {
+                return new ExecutionResult.Error("Terminated early");
+            }
             vmQueryResponseFutureTask.get(30, TimeUnit.SECONDS);
 //            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             if (vm.exitException != null) {
                 return new ExecutionResult.Error(vm.exitException.getMessage());
             }
-            return new ExecutionResult.Error("Some problem eh?");
+            return new ExecutionResult.Error("Some problem eh? (1)");
         }
 
         // a query has sent us something (or the thread exited)
@@ -137,7 +148,7 @@ public class PrologArchitecture implements Architecture {
         if (vm.exitException != null) {
             return new ExecutionResult.Error(vm.exitException.getMessage());
         }
-        return new ExecutionResult.Error("Some problem eh?");
+        return new ExecutionResult.Error("Some problem eh? (2)");
     }
 
     // a query calls this
@@ -177,6 +188,18 @@ public class PrologArchitecture implements Architecture {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void crash(String e) {
+        forceExecutionResult = new ExecutionResult.Error(e);
+
+        if (!vmQueryResponseFutureTask.isDone()) {
+            vmQueryResponseFutureTask.cancel(true);
+        }
+        if (!synchronizedFutureTask.isDone()) {
+            synchronizedFutureTask.cancel(true);
+        }
+//        machine.crash(e);
     }
 
     @Override

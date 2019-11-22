@@ -11,7 +11,7 @@ public class PrologVM extends Thread {
 
     JIPEngine jip;
     PrologArchitecture owner;
-    State state = State.Created;
+    public State state = State.Created;
     Exception exitException;
 
     @Override
@@ -27,12 +27,14 @@ public class PrologVM extends Thread {
                     queryTerm = jipQuery.nextSolution();
                 }
                 // TODO: in signal query mode, wait for and run signal queries until shutdown is requested
+                owner.crash("Query resolved early");
             } else {
                 // run main query
             }
         } catch (Exception e) {
+            state = State.Terminated;
             exitException = e;
-            owner.machine.crash(e.getMessage());
+            owner.crash(e.getMessage());
         }
     }
 
