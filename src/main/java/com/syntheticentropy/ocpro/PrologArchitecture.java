@@ -29,7 +29,7 @@ public class PrologArchitecture implements Architecture {
     private FutureTask<Object> vmQueryResponseFutureTask;
     private int vmQuerySleepTicks;
 
-    private ExecutionResult forceExecutionResult;
+    public ExecutionResult forceExecutionResult;
 
     enum VMResponse {
         RunSynchronous,
@@ -55,6 +55,7 @@ public class PrologArchitecture implements Architecture {
     public boolean initialize() {
 
         //create the VM
+        if (vm != null && vm.jip != null) vm.jip.releaseAllResources();
         vm = new PrologVM(this);
 
         return true;
@@ -67,8 +68,11 @@ public class PrologArchitecture implements Architecture {
 
     @Override
     public ExecutionResult runThreaded(boolean isSynchronizedReturn) {
-        if (forceExecutionResult != null)
-            return forceExecutionResult;
+        if (forceExecutionResult != null) {
+            ExecutionResult tmpResult = forceExecutionResult;
+            forceExecutionResult = null;
+            return tmpResult;
+        }
 
         //Called for: synchronized return, init, or signal
         vmQueryResponse = VMResponse.None;
@@ -169,6 +173,7 @@ public class PrologArchitecture implements Architecture {
             return synchronizedFutureTask.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            crash(e.getMessage());
         }
         return null;
     }
@@ -199,7 +204,7 @@ public class PrologArchitecture implements Architecture {
         if (!synchronizedFutureTask.isDone()) {
             synchronizedFutureTask.cancel(true);
         }
-//        machine.crash(e);
+        machine.crash(e);
     }
 
     @Override
@@ -215,6 +220,8 @@ public class PrologArchitecture implements Architecture {
 
     @Override
     public void close() {
+        if (vm != null && vm.jip != null) vm.jip.releaseAllResources();
+        if (vm != null) vm.jip = null;
         vm = null;
 
         synchronizedSupplier = null;

@@ -4,14 +4,16 @@ bootable_drive(Address) :-
     component_invoke(Address, exists, [string("init.pl")], [InitDoesExist]),
     InitDoesExist.
 
-on_signal(Signal) :-
+
+write_signal(Signal) :-
     !, term_string(Signal, Text),
     xterm_write(Text).
+
 
 biosMain :-
     component_type(gpu, Gpu),
     component_type(screen, Screen),
-    component_invoke(Screen, turnOn, [], _),
+    component_invoke(Screen, turnOn, [string("this is how it should be")], _),
     component_invoke(Gpu, bind, [Screen], _),
     component_invoke(Gpu, maxResolution, [], [MaxWidth, MaxHeight]),
     component_invoke(Gpu, setResolution, [MaxWidth, MaxHeight], _),
@@ -33,5 +35,6 @@ biosMain :-
         ; sleep(200), fail
         ),
         xterm_write("got signal"),
+        write_signal(Signal),
         on_signal(Signal),
         fail.

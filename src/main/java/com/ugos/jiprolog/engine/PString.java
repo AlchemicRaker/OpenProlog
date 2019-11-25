@@ -166,7 +166,7 @@ public final class PString extends ConsList //implements Serializable
         }
     }
 
-    private static final ConsList getList(final String string, boolean chars) {
+    public static final ConsList getList(final String string, boolean chars) {
         ConsList retList = null;
 
         for (int i = string.length() - 1; i >= 0; i--) {

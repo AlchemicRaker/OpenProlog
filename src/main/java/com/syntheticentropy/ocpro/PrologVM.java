@@ -33,13 +33,12 @@ public class PrologVM extends Thread {
             }
         } catch (Exception e) {
             state = State.Terminated;
-            exitException = e;
+//            exitException = e;
             owner.crash(e.getMessage());
         } finally {
-            if (jip != null) {
-                jip.releaseAllResources();
-                jip = null;
-            }
+//            if (jip != null) {
+//                jip.reset();
+//            }
         }
     }
 

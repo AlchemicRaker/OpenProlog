@@ -13,7 +13,7 @@ public abstract class OcproBuiltIn extends BuiltIn {
             return Atom.createAtom(((Boolean) raw) ? "true" : "false");
         }
         if (raw instanceof String) {
-            return new Functor(Atom.createAtom("string/1"), new PString((String) raw, true).getConsCell());
+            return stringToFunctor((String) raw, "string");
         }
         if (raw instanceof Integer) {
             return Expression.createNumber((Integer) raw);
@@ -22,7 +22,7 @@ public abstract class OcproBuiltIn extends BuiltIn {
             return Expression.createNumber((Double) raw);
         }
         if (raw instanceof byte[]) {
-            return new Functor(Atom.createAtom("bytes/1"), new PString(new String((byte[]) raw), true).getConsCell());
+            return stringToFunctor(new String((byte[]) raw), "bytes");
         }
         if (raw instanceof HandleValue) {
             return Expression.createNumber(((HandleValue) raw).handle());
@@ -32,6 +32,10 @@ public abstract class OcproBuiltIn extends BuiltIn {
         }
         // TODO: add maps and lists support
         return Atom.createAtom(raw.toString());
+    }
+
+    public Functor stringToFunctor(String str, String functorName) {
+        return new Functor(Atom.createAtom(functorName + "/1"), new ConsCell(new PString(PString.getList(str, true), true), null));
     }
 
     public Object prologObjectToRaw(PrologObject prologObjectIndirect) {
