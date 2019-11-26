@@ -44,8 +44,7 @@ file_consult(FSAddress, Path, Name) :-
     consult(Content, Name).
 
 machineMain :-
-    component_type(screen, Screen), component_type(gpu, Gpu),
-    component_invoke(Gpu, bind, [Screen], _),
+    ( component_type(screen, Screen), component_type(gpu, Gpu), component_invoke(Gpu, bind, [Screen], _) ; true),
     type_invoke(eeprom, get, [bytes(BiosBytes)]),
     consult(BiosBytes, bios),!,
     biosMain,

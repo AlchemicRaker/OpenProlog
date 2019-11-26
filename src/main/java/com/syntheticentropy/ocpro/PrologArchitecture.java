@@ -1,5 +1,6 @@
 package com.syntheticentropy.ocpro;
 
+import com.google.common.collect.Lists;
 import li.cil.oc.api.machine.Architecture;
 import li.cil.oc.api.machine.ExecutionResult;
 import li.cil.oc.api.machine.Machine;
@@ -8,10 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 @Architecture.Name("Prolog")
@@ -29,7 +27,7 @@ public class PrologArchitecture implements Architecture {
     private FutureTask<Object> vmQueryResponseFutureTask;
     private int vmQuerySleepTicks;
 
-    public ExecutionResult forceExecutionResult;
+    public List<ExecutionResult> forceExecutionResult = Lists.newArrayList();
 
     enum VMResponse {
         RunSynchronous,
@@ -56,6 +54,7 @@ public class PrologArchitecture implements Architecture {
 
         //create the VM
         if (vm != null && vm.jip != null) vm.jip.releaseAllResources();
+        forceExecutionResult = Lists.newArrayList();
         vm = new PrologVM(this);
 
         return true;
@@ -68,10 +67,16 @@ public class PrologArchitecture implements Architecture {
 
     @Override
     public ExecutionResult runThreaded(boolean isSynchronizedReturn) {
-        if (forceExecutionResult != null) {
-            ExecutionResult tmpResult = forceExecutionResult;
-            forceExecutionResult = null;
-            return tmpResult;
+        try {
+            return runThreadedMain(isSynchronizedReturn);
+        } catch (Exception e) {
+            return new ExecutionResult.Error(e.getMessage());
+        }
+    }
+
+    public ExecutionResult runThreadedMain(boolean isSynchronizedReturn) {
+        if (forceExecutionResult.size() > 0) {
+            return forceExecutionResult.remove(0);
         }
 
         //Called for: synchronized return, init, or signal
@@ -126,11 +131,11 @@ public class PrologArchitecture implements Architecture {
             }
             vmQueryResponseFutureTask.get(30, TimeUnit.SECONDS);
 //            vmQueryResponseFutureTask.get(3, TimeUnit.SECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+        } catch (InterruptedException | ExecutionException | TimeoutException | CancellationException e) {
             if (vm.exitException != null) {
                 return new ExecutionResult.Error(vm.exitException.getMessage());
             }
-            return new ExecutionResult.Error("Some problem eh? (1)");
+            return new ExecutionResult.Error(e.getMessage());
         }
 
         // a query has sent us something (or the thread exited)
@@ -196,7 +201,7 @@ public class PrologArchitecture implements Architecture {
     }
 
     public void crash(String e) {
-        forceExecutionResult = new ExecutionResult.Error(e);
+        forceExecutionResult.add(new ExecutionResult.Error(e));
 
         if (!vmQueryResponseFutureTask.isDone()) {
             vmQueryResponseFutureTask.cancel(true);
@@ -226,9 +231,13 @@ public class PrologArchitecture implements Architecture {
 
         synchronizedSupplier = null;
         synchronizedResult = null;
+        if (synchronizedFutureTask != null && !synchronizedFutureTask.isDone() && !synchronizedFutureTask.isCancelled())
+            synchronizedFutureTask.cancel(true);
         synchronizedFutureTask = null;
 
         vmQueryResponse = null;
+        if (vmQueryResponseFutureTask != null && !vmQueryResponseFutureTask.isDone() && !vmQueryResponseFutureTask.isCancelled())
+            vmQueryResponseFutureTask.cancel(true);
         vmQueryResponseFutureTask = null;
     }
 
