@@ -32,7 +32,7 @@ public class PopSignal1 extends OcproBuiltIn {
             return new Signal[0];
         });
 
-        if (signals.length == 0 || signals[0] == null) {
+        if (signals == null || signals.length == 0 || signals[0] == null) {
             hasMoreChoices = false;
             return false;
         }

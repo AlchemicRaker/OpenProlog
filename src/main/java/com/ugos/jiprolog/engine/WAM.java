@@ -41,6 +41,7 @@ public class WAM {
 
     int m_nBaseCounter;
     boolean m_bClosed = false;
+    boolean forceStop = false;
 
     Stack<String> moduleStack = new Stack<String>();
 
@@ -304,7 +305,7 @@ public class WAM {
 //        int         nCallCount = m_nBaseCounter;
 
         try {
-            while (curNode != null) {
+            while (curNode != null && !forceStop) {
                 m_curNode = curNode;
 
                 try {
@@ -632,6 +633,10 @@ public class WAM {
 
             node = node.m_previous;
         }
+    }
+
+    public void setForceStop(boolean value) {
+        forceStop = value;
     }
 }
 

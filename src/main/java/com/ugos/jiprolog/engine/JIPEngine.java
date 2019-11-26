@@ -1211,7 +1211,8 @@ public class JIPEngine implements Serializable {
      * Developers should not call it directly.
      */
     protected void finalize() {
-        m_eventNotifier.setEnabled(false);
+        if (m_eventNotifier != null)
+            m_eventNotifier.setEnabled(false);
         m_eventNotifier = null;
         closeAllQueries();
     }

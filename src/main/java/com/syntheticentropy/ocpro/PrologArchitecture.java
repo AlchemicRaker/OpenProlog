@@ -171,12 +171,13 @@ public class PrologArchitecture implements Architecture {
 
         // let the architecture know the query is ready and waiting
         vmQueryResponse = VMResponse.RunSynchronous;
+        if (vmQueryResponseFutureTask == null) return null;
         vmQueryResponseFutureTask.run();
 
         try {
             // wait for the architecture to run the sync'd code *and* resume on the thread
             return synchronizedFutureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | CancellationException e) {
             e.printStackTrace();
             crash(e.getMessage());
         }
@@ -190,12 +191,13 @@ public class PrologArchitecture implements Architecture {
         // let the architecture know the query is waiting
         vmQueryResponse = VMResponse.Wait;
         vmQuerySleepTicks = ticks;
+        if (vmQueryResponseFutureTask == null) return;
         vmQueryResponseFutureTask.run();
 
         try {
             // wait for the architecture to resume on the thread, presumably with a signal
             synchronizedFutureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException | ExecutionException | CancellationException e) {
             e.printStackTrace();
         }
     }
@@ -203,13 +205,7 @@ public class PrologArchitecture implements Architecture {
     public void crash(String e) {
         forceExecutionResult.add(new ExecutionResult.Error(e));
 
-        if (!vmQueryResponseFutureTask.isDone()) {
-            vmQueryResponseFutureTask.cancel(true);
-        }
-        if (!synchronizedFutureTask.isDone()) {
-            synchronizedFutureTask.cancel(true);
-        }
-        machine.crash(e);
+//        machine.crash(e);
     }
 
     @Override
@@ -226,7 +222,10 @@ public class PrologArchitecture implements Architecture {
     @Override
     public void close() {
         if (vm != null && vm.jip != null) vm.jip.releaseAllResources();
-        if (vm != null) vm.jip = null;
+        if (vm != null) {
+            vm.pleaseStop(true);
+            vm.jip = null;
+        }
         vm = null;
 
         synchronizedSupplier = null;

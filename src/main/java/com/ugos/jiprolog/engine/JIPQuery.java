@@ -157,5 +157,9 @@ public class JIPQuery extends Object implements Serializable {
         this.m_bSoftAbort = bSoftAbort;
     }
 
+    public WAM getWam() {
+        return m_wam;
+    }
+
 }
 

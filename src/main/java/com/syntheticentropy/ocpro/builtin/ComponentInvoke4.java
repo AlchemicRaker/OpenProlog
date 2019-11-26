@@ -63,7 +63,7 @@ public class ComponentInvoke4 extends OcproBuiltIn {
                 tryAgain = true; //try again in one tick
                 this.m_jipEngine.getOwner().waitingCall(1);
             } catch (Exception e) {
-                e.printStackTrace();
+                getJIPEngine().getOwner().crash(e.getMessage());
             }
         }
         if (!callback.direct() || tryAgain) {
@@ -71,7 +71,7 @@ public class ComponentInvoke4 extends OcproBuiltIn {
                 try {
                     return this.getJIPEngine().getOwner().machine.invoke(address, method, params.toArray());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    getJIPEngine().getOwner().crash(e.getMessage());
                 }
                 return new Object[0];
             });
