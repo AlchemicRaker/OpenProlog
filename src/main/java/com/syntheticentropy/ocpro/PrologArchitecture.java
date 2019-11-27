@@ -185,21 +185,24 @@ public class PrologArchitecture implements Architecture {
     }
 
     // a query calls this
-    public void waitingCall(int ticks) {
+    public long waitingCall(int ticks) {
+        long startTime = machine.worldTime();
         synchronizedFutureTask = new FutureTask<>(() -> new Object[0]);
 
         // let the architecture know the query is waiting
         vmQueryResponse = VMResponse.Wait;
         vmQuerySleepTicks = ticks;
-        if (vmQueryResponseFutureTask == null) return;
+        if (vmQueryResponseFutureTask == null) return 0;
         vmQueryResponseFutureTask.run();
 
         try {
             // wait for the architecture to resume on the thread, presumably with a signal
             synchronizedFutureTask.get();
         } catch (InterruptedException | ExecutionException | CancellationException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
+        long stopTime = machine.worldTime();
+        return stopTime - startTime;
     }
 
     public void crash(String e) {

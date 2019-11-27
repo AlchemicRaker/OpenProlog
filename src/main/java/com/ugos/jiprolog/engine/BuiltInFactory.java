@@ -38,9 +38,9 @@ final class BuiltInFactory extends Object {
         m_builtInTable.put("nodebug/0", new Nodebug0());
         m_builtInTable.put("debugging/0", new Debugging0());
 
-        m_builtInTable.put("write/1", new Write1());
-        m_builtInTable.put("write_canonical/1", new WriteCanonical1());
-        m_builtInTable.put("nl/0", new NL0());
+//        m_builtInTable.put("write/1", new Write1());
+//        m_builtInTable.put("write_canonical/1", new WriteCanonical1());
+//        m_builtInTable.put("nl/0", new NL0());
 
         m_builtInTable.put("length/2", new Length2());
         m_builtInTable.put("ground/1", new Ground1());
@@ -70,7 +70,7 @@ final class BuiltInFactory extends Object {
         m_builtInTable.put("compare/3", new Compare3());
         m_builtInTable.put("clause/2", new Clause2());
         m_builtInTable.put("unconsult/1", new Unconsult1());
-        m_builtInTable.put("multifile/1", new Multifile1());
+//        m_builtInTable.put("multifile/1", new Multifile1());
         m_builtInTable.put("module_transparent/1", new ModuleTransparent1());
         m_builtInTable.put("dynamic/1", new Dynamic1());
         m_builtInTable.put("discontiguous/1", new Discontiguous1());
@@ -149,6 +149,7 @@ final class BuiltInFactory extends Object {
         m_builtInTable.put("free_variables/2", new TermVariables2());
 
         m_builtInTable.put("sleep/1", new Sleep1());
+        m_builtInTable.put("sleep/2", new Sleep2());
         m_builtInTable.put("component_invoke/4", new ComponentInvoke4());
         m_builtInTable.put("component_type/2", new ComponentType2());
         m_builtInTable.put("component_method/2", new ComponentMethod2());

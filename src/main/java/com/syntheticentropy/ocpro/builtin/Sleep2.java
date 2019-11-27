@@ -7,11 +7,12 @@ import com.ugos.jiprolog.engine.Variable;
 
 import java.util.Hashtable;
 
-public class Sleep1 extends OcproBuiltIn {
+public class Sleep2 extends OcproBuiltIn {
 
     @Override
-    public boolean unify(Hashtable<Variable, Variable> m_varsTbl) {
+    public boolean unify(Hashtable<Variable, Variable> varsTbl) {
         final PrologObject timeoutTerm = getRealTerm(getParam(1));
+        final PrologObject waitedParam = getParam(2);
 
         if (!(timeoutTerm instanceof Expression) || !((Expression) timeoutTerm).isInteger())
             throw new JIPTypeException(JIPTypeException.INTEGER, timeoutTerm);
@@ -20,7 +21,9 @@ public class Sleep1 extends OcproBuiltIn {
 
         long waited = this.m_jipEngine.getOwner().waitingCall(timeout);
 
-        return timeout.longValue() == waited; //true if that much time has passed
+        Expression waitedResult = Expression.createNumber(waited);
+
+        return waitedResult.unify(waitedParam, varsTbl);
     }
 
     @Override

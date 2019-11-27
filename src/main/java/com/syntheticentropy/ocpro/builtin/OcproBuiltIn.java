@@ -62,6 +62,8 @@ public abstract class OcproBuiltIn extends BuiltIn {
         }
         if (prologObject instanceof Functor) {
             Functor functor = (Functor) prologObject;
+            if (functor.getTerm(2) instanceof Variable && !((Variable) functor.getTerm(2)).isBounded())
+                return "[" + ((Variable) functor.getTerm(2)).getName() + "]";
             if (functor.getFriendlyName().equalsIgnoreCase("string")) {
                 return new PString(PString.create(((ConsCell) functor.getTerm(2).getRealTerm()).getTerms()), true)
                         .getString();

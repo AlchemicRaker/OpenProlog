@@ -23,28 +23,26 @@ public class PopSignal1 extends OcproBuiltIn {
 
         // do a synchronized call to poll for a signal
 
-        Signal[] signals = (Signal[]) this.m_jipEngine.getOwner().synchronizedCall(() -> {
-            try {
-                return new Signal[]{this.getJIPEngine().getOwner().machine.popSignal()};
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return new Signal[0];
-        });
+        Signal signal = null;
+        try {
+            signal = this.getJIPEngine().getOwner().machine.popSignal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        if (signals == null || signals.length == 0 || signals[0] == null) {
+        if (signal == null) {
             hasMoreChoices = false;
             return false;
         }
 
-        Signal signal = signals[0];
+        hasMoreChoices = true;
 
         List<PrologObject> argsList = Arrays.asList(signal.args()).stream().map(this::rawToPrologObject).collect(Collectors.toList());
 
         Functor functor = new Functor(signal.name() + "/" + argsList.size(), ConsList.create(argsList).getConsCell());
 
-        hasMoreChoices = functor.unify(signalParam, varsTbl);
-        return hasMoreChoices;
+        functor.unify(signalParam, varsTbl);
+        return true;
     }
 
     @Override
