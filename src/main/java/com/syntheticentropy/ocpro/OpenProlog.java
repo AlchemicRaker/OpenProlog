@@ -20,7 +20,7 @@ public class OpenProlog
     @SuppressWarnings("WeakerAccess")
     public static final String NAME = "OpenProlog";
     @SuppressWarnings("WeakerAccess")
-    public static final String VERSION = "0.3.4";
+    public static final String VERSION = "0.3.6";
 
     // resource path
     static final String RESOURCE_PATH = "/com/syntheticentropy/ocpro/";
