@@ -2,11 +2,29 @@ package com.syntheticentropy.ocpro.builtin;
 
 import com.ugos.jiprolog.engine.*;
 import li.cil.oc.server.component.HandleValue;
+import scala.collection.JavaConverters;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class OcproBuiltIn extends BuiltIn {
 
+    private ConsList entryToConsList(Map.Entry entry) {
+        return ConsList.create(Arrays.asList(rawToPrologObject(entry.getKey()), rawToPrologObject(entry.getValue())));
+    }
+    private boolean isMap(Object o) {
+        return o instanceof Map || o instanceof scala.collection.Map;
+    }
+    private Map<Object, Object> toMap(Object o) {
+        if (o instanceof scala.collection.Map) {
+            return (Map<Object, Object>) JavaConverters.mapAsJavaMapConverter((scala.collection.Map) o).asJava();
+        }
+        return (Map<Object, Object>) o;
+    }
+
+    @SuppressWarnings("unchecked")
     public PrologObject rawToPrologObject(Object raw) {
         if (raw instanceof Boolean) {
             Boolean b = (Boolean) raw;
@@ -26,6 +44,20 @@ public abstract class OcproBuiltIn extends BuiltIn {
         }
         if (raw instanceof HandleValue) {
             return Expression.createNumber(((HandleValue) raw).handle());
+        }
+        if (isMap(raw)) {
+            Map<Object, Object> map = toMap(raw);
+            return ConsList.create(map.entrySet().stream().map(this::entryToConsList).collect(Collectors.toList()));
+        }
+        if (raw instanceof Object[]) {
+            Object[] objects = (Object[]) raw;
+            return ConsList.create(Arrays.stream(objects).map(this::rawToPrologObject).collect(Collectors.toList()));
+        }
+        if (raw instanceof double[]) {
+            return ConsList.create(Arrays.stream((double[]) raw).boxed().map(this::rawToPrologObject).collect(Collectors.toList()));
+        }
+        if (raw instanceof int[]) {
+            return ConsList.create(Arrays.stream((int[]) raw).boxed().map(this::rawToPrologObject).collect(Collectors.toList()));
         }
         if (raw == null) {
             return Atom.createAtom("null");
