@@ -156,6 +156,7 @@ final class BuiltInFactory extends Object {
         m_builtInTable.put("consult/2", new Consult2());
         m_builtInTable.put("pop_signal/1", new PopSignal1());
         m_builtInTable.put("term_string/2", new TermString2());
+        m_builtInTable.put("computer/2", new Computer2());
 
 //        catch((X = 1, throw(gulp)), E, (write(ok-X), nl)).
         //m_BuiltInTable.put("wait/1",            new Wait1());

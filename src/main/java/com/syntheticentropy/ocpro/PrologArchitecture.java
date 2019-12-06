@@ -207,8 +207,10 @@ public class PrologArchitecture implements Architecture {
 
     public void crash(String e) {
         forceExecutionResult.add(new ExecutionResult.Error(e));
-
-//        machine.crash(e);
+        if (machine.isRunning()) {
+            machine.crash(e);
+            close();
+        }
     }
 
     @Override

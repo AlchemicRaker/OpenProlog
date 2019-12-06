@@ -54,7 +54,7 @@ public class ComponentMethod2 extends OcproBuiltIn {
 
             if (attempt) {
                 // One result from this function = one call
-                getJIPEngine().getOwner().synchronizedCall(() -> null);
+//                getJIPEngine().getOwner().synchronizedCall(() -> null);
 
                 return (addressAtom == null || addressAtom.unify(addressParam, varsTbl)) &&
                         (methodAtom == null || methodAtom.unify(methodParam, varsTbl));
@@ -62,7 +62,7 @@ public class ComponentMethod2 extends OcproBuiltIn {
         }
 
         // One result from this function = one call
-        getJIPEngine().getOwner().synchronizedCall(() -> null);
+//        getJIPEngine().getOwner().synchronizedCall(() -> null);
         return false;
     }
 

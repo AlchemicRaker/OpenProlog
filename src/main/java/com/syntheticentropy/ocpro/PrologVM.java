@@ -29,6 +29,9 @@ public class PrologVM extends Thread {
             } else {
                 // run main query
             }
+        } catch (JIPRuntimeException e) {
+            state = State.Terminated;
+            owner.crash(e.getMessage());
         } catch (Exception e) {
             state = State.Terminated;
             owner.crash(e.getMessage());
